@@ -1,0 +1,182 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'detector.frame': 'frames'}",
+      "time": "2022-07-18T18:41:30.185847"
+    }
+  ],
+  "point_started": [
+    "2022-07-18T18:41:30.186899",
+    "2022-07-18T18:41:31.485165",
+    "2022-07-18T18:41:33.049462",
+    "2022-07-18T18:41:34.156248",
+    "2022-07-18T18:41:35.284230"
+  ],
+  "point_ended": [
+    "2022-07-18T18:41:31.327633",
+    "2022-07-18T18:41:33.049462",
+    "2022-07-18T18:41:34.156248",
+    "2022-07-18T18:41:35.284230",
+    "2022-07-18T18:41:36.363377"
+  ],
+  "steps_taken": [
+    {
+      "step": {
+        "call": [
+          [
+            1
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_frame_time"
+        ],
+        "scope": "detector"
+      },
+      "time": "2022-07-18T18:41:30.185847"
+    },
+    {
+      "step": [
+        {
+          "write": 0,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T18:41:30.186899"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T18:41:30.186899"
+    },
+    {
+      "step": [
+        {
+          "write": 1,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T18:41:31.485165"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T18:41:31.721410"
+    },
+    {
+      "step": [
+        {
+          "write": 2,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T18:41:33.049462"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T18:41:33.049462"
+    },
+    {
+      "step": [
+        {
+          "write": 3,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T18:41:34.156248"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T18:41:34.156248"
+    },
+    {
+      "step": [
+        {
+          "write": 4,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T18:41:35.284230"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T18:41:35.284230"
+    },
+    {
+      "step": {
+        "call": [
+          [
+            0.5
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_frame_time"
+        ],
+        "scope": "detector"
+      },
+      "time": "2022-07-18T18:41:36.363377"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+2022-06-01 17:16:59.216 | WARNING  | autodidaqt_common.remote.schema:from_type:249 - Assuming naive implementation of Array and Object types.
+2022-06-01 17:16:59.229 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2022-06-01 17:16:59.231 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2022-06-01 17:16:59.231 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-06-01 17:16:59.234 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2022-06-01 17:16:59.260 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2022-06-01 17:16:59.261 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2022-06-01 17:16:59.262 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2022-06-01 17:16:59.450 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-06-01 17:16:59.452 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2022-06-01 17:16:59.670 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel powermeter
+2022-06-01 17:16:59.692 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer
+2022-06-01 17:16:59.693 | WARNING  | autodidaqt.panels.basic_instrument_panel:layout:223 - Not live plotting image: not currently supported. Complain at Conrad if this sufficiently upsets you.
+2022-06-01 17:16:59.703 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2022-06-01 17:16:59.752 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2022-06-01 17:16:59.787 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2022-06-01 17:16:59.788 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2022-06-01 17:16:59.923 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2022-06-01 17:16:59.948 | ERROR    | autodidaqt.core:handle_exception:382 - Caught Unhandled: Could not locate a VISA implementation. Install either the IVI binary or pyvisa-py.
+2022-06-01 17:16:59.963 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2022-06-01 17:16:59.968 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2022-06-01 17:16:59.983 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2022-06-01 17:16:59.985 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2022-06-01 17:16:59.997 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2022-06-01 17:17:00.002 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2022-06-01 17:17:00.015 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2022-06-01 17:17:00.024 | ERROR    | autodidaqt.core:handle_exception:382 - Caught Unhandled: 'NoneType' object has no attribute 'put'
+2022-06-01 17:17:49.588 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

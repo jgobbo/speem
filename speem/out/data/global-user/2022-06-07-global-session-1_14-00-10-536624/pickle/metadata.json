@@ -1,0 +1,328 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'beam_pointer.x': 'laser_x', 'beam_pointer.y': 'laser_y', 'beam_pointer.z': 'laser_z'}, dependent={'detector.frame': 'frames'}",
+      "time": "2022-06-07T14:00:02.343374"
+    }
+  ],
+  "point_started": [
+    "2022-06-07T14:00:02.350350",
+    "2022-06-07T14:00:03.747853",
+    "2022-06-07T14:00:05.257617",
+    "2022-06-07T14:00:05.953590",
+    "2022-06-07T14:00:06.767371",
+    "2022-06-07T14:00:07.428045",
+    "2022-06-07T14:00:08.159213",
+    "2022-06-07T14:00:08.916489",
+    "2022-06-07T14:00:09.671940"
+  ],
+  "point_ended": [
+    "2022-06-07T14:00:03.094959",
+    "2022-06-07T14:00:05.250781",
+    "2022-06-07T14:00:05.950629",
+    "2022-06-07T14:00:06.760574",
+    "2022-06-07T14:00:07.425907",
+    "2022-06-07T14:00:08.150884",
+    "2022-06-07T14:00:08.910521",
+    "2022-06-07T14:00:09.665688",
+    "2022-06-07T14:00:10.515903"
+  ],
+  "steps_taken": [
+    {
+      "step": {
+        "call": [
+          [
+            0.0
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_z"
+        ],
+        "scope": "beam_pointer"
+      },
+      "time": "2022-06-07T14:00:02.343374"
+    },
+    {
+      "step": [
+        {
+          "write": 0.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 0.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:02.350350"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:02.382298"
+    },
+    {
+      "step": [
+        {
+          "write": 0.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 75.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:03.747853"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:04.412288"
+    },
+    {
+      "step": [
+        {
+          "write": 0.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 150.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:05.257617"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:05.291850"
+    },
+    {
+      "step": [
+        {
+          "write": 75.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 0.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:05.953590"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:06.027854"
+    },
+    {
+      "step": [
+        {
+          "write": 75.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 75.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:06.767371"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:06.799067"
+    },
+    {
+      "step": [
+        {
+          "write": 75.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 150.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:07.428045"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:07.462882"
+    },
+    {
+      "step": [
+        {
+          "write": 150.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 0.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:08.159213"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:08.191103"
+    },
+    {
+      "step": [
+        {
+          "write": 150.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 75.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:08.916489"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:08.958135"
+    },
+    {
+      "step": [
+        {
+          "write": 150.0,
+          "path": [
+            "x"
+          ],
+          "scope": "beam_pointer"
+        },
+        {
+          "write": 150.0,
+          "path": [
+            "y"
+          ],
+          "scope": "beam_pointer"
+        }
+      ],
+      "time": "2022-06-07T14:00:09.671940"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-07T14:00:09.820850"
+    }
+  ]
+}

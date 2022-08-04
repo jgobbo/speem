@@ -1,0 +1,511 @@
+Developer's documentation - Supply Interface
+-------------------------------------------------------------------------------
+
+Version: 1.0
+
+0  General notes
+  0.1  DataTypes
+  0.2  Error indication conventions
+  0.3  Terms and definitions
+  0.4  Record field alignment
+
+1  Initialization functions
+  1.1  GDS_SUP_Initialize
+  1.2  GDS_SUP_Finalize
+  1.2  GDS_SUP_Setup
+  1.3  GDS_SUP_SetSetup
+  1.4  GDS_SUP_GetSetup
+
+2  Utility functions
+  2.1  GDS_SUP_Reset
+  2.2  GDS_SUP_TestCommunication
+  2.3  GDS_SUP_GetLibInfo
+
+3  Supply control functions
+  3.1  GDS_SUP_SetHV
+  3.2  GDS_SUP_SetDAC6
+  3.3  GDS_SUP_SetDAC20
+  3.4  GDS_SUP_Burst
+  3.5  GDS_SUP_SetFloodgun
+  3.6  GDS_SUP_SetRegister
+
+4  References
+
+
+
+0  General notes
+
+0.1  Data types
+
+  An effort has been made to make this interface compatible with other
+  programming languages. Excluding the ordinal types, which are very similar
+  for all programming languages, there are the types 'boolean' and 'PChar'
+  which need to be taken into consideration.
+
+  'boolean' is almost equivalent with C++ 'bool' type, although 'bool' is a bit
+  more restrictive. It is a one byte true boolean type, whose ordinal values
+  are 1 for true and 0 for false. The 'boolean' type does accept ordinal values
+  different from 0 and 1, and, contrary to C++ 'bool', does not convert such
+  values to 1. A 'boolean' variable with an ordinal value different from 0 and
+  1 will evaluate to true, but might break boolean arithmetic. The preferrable
+  choice is therefore to use the C++ 'bool' type with 'boolean' parameters or
+  return values. If this is impossible, a byte should be used, and it must
+  always be 1 or 0.
+
+  Note also that C++ 'bool' and Windows 'BOOL' are two completely different
+  things. Windows 'BOOL' is a four byte ordinal and will not work with the
+  'boolean' type.
+
+  The type 'PChar' is Delphi's version of C/C++ (char *) and they can be used
+  interchangably.
+
+  The 'var' reserved word in Delphi indicates that the parameter is called "by
+  reference". In C/C++ this can be implemented either by using a reference
+  parameter or a pointer. For maximum portability, the C pointer type is preferred,
+  and is used in this document.
+
+0.2  Error indication conventions
+
+  Error base value: 12000
+
+  An error in a supply interface library is indicated by returning a
+  non-zero value. The only exceptions are those functions that do not have
+  Integer as return type. By convention, this value should have the base 12000,
+  so that even if no resource string is provided for the error, it can easily
+  be seen to originate from a supply interface library.
+
+0.3  Terms and definitions
+
+  In this text there appears several terms which can be confusing, therefore a
+  list of terms and definitions is provided below:
+
+    supplies:
+      The term 'supplies', as a single word, refers to the actual supply
+      hardware.
+
+    supply interface library:
+      The term 'supply interface library' refers to a software library used
+      as a plugin to the instrument interface library to control the supplies.
+
+    instrument interface library[1]:
+      The term 'instrument interface library' refers to the software library
+      used to control an instrument. I.e., SESInstrument.dll and
+      XESInstrument.dll.
+
+0.4  Record field alignment
+
+  Supply interface libraries use 8 byte record field alignment.
+
+
+1. Initialization functions
+
+1.1  Initialize
+
+  syntax:
+    function GDS_SUP_Initialize(AHandle: HWND): integer; stdcall;
+    int __stdcall GDS_SUP_Initialize(HWND AHandle);
+
+  parameters:
+    AHandle
+      [in] The handle of the application's main window or 0.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to initialize objects and structures in a supply
+    interface library.
+
+    It is called whenever a new supply interface library is loaded in the
+    instrument interface library.
+
+  remark:
+    This function is optional.
+
+    If this function is implemented, it should return a non-zero value only in
+    the most severe cases. Returning a non-zero value will result in the
+    instrument interface library unloading the supply interface library.
+
+1.2  Finalize
+
+  syntax:
+    procedure GDS_SUP_Finalize; stdcall;
+    void __stdcall GDS_SUP_Finalize();
+
+  usage:
+    This function is used to finalize objects and structures in a supply
+    interface library.
+
+    It is called whenever a supply interface library is unloaded in the
+    instrument interface library.
+
+  remark:
+    This function is optional.
+
+    Use this function for library finalization rather than DLL_PROCESS_DETACH.
+
+1.3  Setup
+
+  syntax:
+    function GDS_SUP_Setup: boolean; stdcall;
+    bool __stdcall GDS_SUP_Setup();
+
+  return value:
+    If changes have been made to the supply settings, this function should
+    return true.
+
+    If no changes have been made to the supply settings, or changes made
+    have been discarded, this functions should return false.
+
+  usage:
+    This function is used to display a dialogue with settings relevant to the
+    supply interface library.
+
+    It is called when the 'Setup' button for supply interface is clicked in the
+    'Instrument Installation' dialogue in the instrument interface library.
+
+  remark:
+    This function is optional.
+
+1.4  SetSetup
+
+  syntax:
+    function GDS_SUP_SetSetup(ASetupBlock: Pointer; ASize: integer):
+      integer; stdcall;
+    int __stdcall GDS_SUP_SetSetup(void *ASetupBlock, int ASize);
+
+  parameters:
+    ASetupBlock
+      [in] Pointer to a memory block containing the supply settings.
+
+    ASize
+      [in] Integer specifying the size of the memory block.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to restore supply settings from the current
+    instrument settings file.
+
+    It is called whenever the instrument settings file is loaded, and whenever
+    a new supply interface library is loaded in the instrument interface
+    library.
+
+    A supply interface library should check that the value of the ASize
+    parameters conforms with the size of its supply settings structure. If it
+    doesn't, the function should return indicating failure.
+
+  remark:
+    This function is optional.
+
+    It is recommended that a custom file containing the supply settings is
+    used rather than GDS_SUP_SetSetup and GDS_SUP_GetSetup.
+
+1.5  GetSetup
+
+  syntax:
+    function GDS_SUP_GetSetup(ASetupBlock: Pointer; var ASize: integer):
+      boolean; stdcall;
+    bool __stdcall GDS_SUP_GetSetup(void *ASetupBlock, int *ASize);      
+
+  parameters:
+    ASetupBlock
+      [in] Pointer to a memory block to receive the supply settings.
+
+    ASize
+      [in] Integer specifying the size of the memory block. 
+      [out] Integer to receive the size necessary for storing the supply
+      settings.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to retrieve supply settings from the supply
+    interface library.
+
+    It is called whenever the instrument settings file is saved.
+
+    A supply interface library should check that ASize conforms with the size
+    of its supply settings structure, and if so store the contents of this
+    structure in ASetupBlock.
+
+    If the sizes don't match, it should store the correct size in ASize and
+    return false. This function will then be called again with the the correct
+    size in the ASize parameter.
+
+  remark:
+    This function is optional.
+
+    It is recommended that a custom file containing the supply settings is
+    used rather than GDS_SUP_SetSetup and GDS_SUP_GetSetup.
+
+2  Utility functions
+
+2.1  Reset
+
+  syntax:
+    function GDS_SUP_Reset: integer; stdcall;
+    int __stdcall GDS_SUP_Reset();
+    
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to reset the hardware that the supply interface
+    library controls.
+
+    It is called whenever a new supply interface library is loaded in the
+    instrument interface library.
+
+    It is also called whenever GDS_ResetInstrument[1] is called in the
+    instrument interface library, e.g. when the user clicks 'File|Reset' in
+    Ses or Xes.
+    
+  remark:
+    This function is optional.
+
+2.2  TestCommunication
+
+  syntax:
+    function GDS_SUP_TestCommunication(var AID: integer): integer; stdcall;
+    int __stdcall GDS_SUP_TestCommunication(int *AID);
+
+  parameters:
+    AID
+      [in] Integer specifying the ID of the current hardware unit for which to
+      test communication.
+      [out] Integer to receive the ID of the next hardware unit or -1.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+    
+  usage:
+    This function is used to test the communication with one or more hardware
+    units that the supply interface library controls.
+
+    This function will first be called with AID = 0. If there are more hardware
+    units than one to be tested, the supply interface library should set AID
+    to indicate the next unit. When all units have been tested in this way,
+    the supply interface library *must* set AID to -1 to indicate that there
+    are no more units to test. Failing to do so will result in an endless loop.
+
+    It is called whenever a new supply interface library is loaded in the
+    instrument interface library.
+
+    It is also called whenever GDS_TestCommunication[1] is called in the
+    instrument interface library, e.g. when Ses or Xes is started.
+
+  remark:
+    This function is optional.
+
+2.3  GetLibInfo
+
+  syntax:
+    function GDS_SUP_GetLibInfo: PChar; stdcall;
+    char* __stdcall GDS_SUP_GetLibInfo();
+
+  return value:
+    A pointer to a null terminated string or nil.
+
+  usage:
+    This function is used to retrieve an information string, i.e. a version
+    string, from the supply interface library.
+
+    It is called whenever the 'Instrument Installation' dialogue in the
+    instrument interface library is opened, and while that dialogue is open,
+    whenever a new supply interface library is loaded.
+
+  remark:
+    This function is optional.
+
+
+3  Supply functions
+
+3.1  SetHV
+
+  syntax:
+    function GDS_SUP_SetHV(AAddress, AValue, APeriod: integer): integer; stdcall;
+    int __stdcall GDS_SUP_SetHV(int AAddress, int AValue, int APeriod);
+
+  parameters:
+    AAddress
+      [in] Integer specifying the address of a high voltage supply.
+
+    AValue
+      [in] Integer representing the voltage to assign to the high voltage
+      supply.
+
+    APeriod
+      [in] Integer specifying the period of the high voltage supply.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to assign a voltage to a high voltage supply. The
+    integer representation of the voltage is calculated from calibration
+    parameters.
+
+    It is called whenever a high voltage supply should be assigned a new
+    voltage.
+
+    The value of AAddress corresponds to a supply ID in the
+    'Supply Installation' dialogue of the instrument interface library.
+    
+  remark:
+    This function is required. If it doesn't do anything it should return
+    success.
+
+3.2  SetDAC6
+
+  syntax:
+    function GDS_SUP_SetDAC6(AAddress, AValue: integer): integer; stdcall;
+    int __stdcall GDS_SUP_SetDAC6(int AAddress, int AValue);
+
+  parameters
+    AAddress
+      [in] Integer specifying the address of a DAC6.
+
+    AValue
+      [in] Integer representing the voltage to assign to the DAC6.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+
+  usage:
+    This function is used to assign a certain voltage to a DAC6. The integer
+    representation of the voltage is calculated from calibration parameters.
+
+    It is called whenever a DAC6 should be assigned a new voltage.
+
+    The value of AAddress corresponds to a supply ID in the
+    'Supply Installation' dialogue of the instrument interface library.
+
+  remark:
+    This function is required. If it doesn't do anything it should return
+    success.
+
+3.3  SetDAC20
+
+  syntax:
+    function GDS_SUP_SetDAC20(AAddress, AValue: integer): integer; stdcall;
+    int __stdcall GDS_SUP_SetDAC20(int AAddress, int AValue);
+
+  parameters
+    AAddress
+      [in] Integer specifying the address of a DAC20.
+
+    AValue
+      [in] Integer representing the voltage to assign to the DAC20.
+
+  return value:
+    If this function succeeds, the return value should be 0.
+
+    If it fails, it should return a non-zero value. Optionally, this value can
+    be an index of a string in a string table resource.
+    
+  usage:
+    This function is used to assign a certain voltage to a DAC20. The integer
+    representation of the voltage is calculated from calibration parameters.
+
+    It is called whenever a DAC20 should be assigned a new voltage.
+
+    The value of AAddress corresponds to a supply ID in the
+    'Supply Installation' dialogue of the instrument interface library.
+
+  remark:
+    This function is required. If it doesn't do anything it should return
+    success.
+
+3.4  Burst
+
+  syntax:
+    function GDS_SUP_Burst: integer; stdcall;
+    int __stdcall GDS_SUP_Burst();
+
+  return value:
+    If the function succeeds, the return value should be 0.
+
+    If the function fails, it should return a non-zero value. Optionally, this
+    value can be an index of a string in a string table resource.
+
+  usage:
+    This function is used to apply voltages previously assigned to supplies
+    through GDS_SUP_SetHV, GDS_SUP_SetDAC6 and GDS_SUP_SetDAC20 functions.
+
+    It is called whenever a batch of supplies have been assigned new voltages,
+    and the actual voltage outputs should be applied.
+
+  remark:
+    This function is required. If it doesn't do anything, it should return
+    success.
+
+3.4  SetFloodgun
+
+  syntax:
+    function GDS_SUP_SetFloodgun(AAddress: integer; AIndex, AValue: byte): integer; stdcall;
+    int __stdcall GDS_SUP_SetFloodgun(int AAddress, unsigned char AIndex, unsigned char AValue);
+
+  return value:
+    If the function succeeds, the return value should be 0.
+
+    If the function fails, it should return a non-zero value. Optionally, this
+    value can be an index of a string in a string table resource.
+
+  usage:
+    This function is used to control a floodgun. It is only used when the Floodgun.dll
+    library has been installed as a User Interface [2], and the supply library has been
+    connected to the floodgun library.
+
+  remark:
+    This function is optional when no floodgun user interface has been assigned,
+    but required when the supply library has been assigned to the floodgun interface.
+    In the latter case, if it doesn't do anything, it should return success.
+    
+3.5  GDS_SUP_SetRegister
+
+  syntax:
+    function GDS_SUP_SetRegister(AAddress: Integer; AValue: Byte): Integer; stdcall;
+    int __stdcall GDS_SUP_SetRegister(int AAddress, unsigned char value);
+
+  return value:
+    If the function succeeds, the return value should be 0.
+
+    If the function fails, it should return a non-zero value. Optionally, this
+    value can be an index of a string in a string table resource.
+
+  usage:
+    This function is used to write a data byte to a control register in the HVC20. 
+
+  remark:	
+    This function is optional when no user interface which uses this function has been loaded into SES,
+    but required when the supply library has been assigned to a user interface which requier this function.
+    Such as the Spinswitch interface.
+    
+
+4  References
+  [1] instrument-interface.txt
+  [2] user-interface.txt

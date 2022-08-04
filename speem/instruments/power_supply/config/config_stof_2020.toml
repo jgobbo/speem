@@ -1,0 +1,10 @@
+name = "Calibration File for Spin-ToF 2020"
+author = 'Conrad Stansbury'
+date = '2020/2/10'
+notes = 'Copied calibration information over from LV in order to put supplies on a separate computer more simply.'
+
+lv_calibration = 0.0002
+
+hv_calibration_file = 'calibrations/stof_2020.txt'
+lens_table_file = 'lens_tables/stof_2020.txt'
+definitions_file = 'lens_definitions/lens_definitions.txt'

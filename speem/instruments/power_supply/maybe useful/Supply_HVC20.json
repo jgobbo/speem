@@ -1,0 +1,17 @@
+{
+    "buffering": true,
+    "devices": {
+        "Rack 1": {
+            "library": "dll/HWDI_Network1.dll",
+            "properties": {
+                "connectTimeout": 1000,
+                "host": "10.0.40.20",
+                "port": 4001,
+                "readTimeout": 1500,
+                "writeTimeout": 100
+            }
+        }
+    },
+    "name": "Supply_HVC20",
+    "version": "1.0.1 (Rev. 7489)"
+}

@@ -1,0 +1,42 @@
+2022-04-26 01:32:25.739 | WARNING  | autodidaqt_common.remote.schema:from_type:250 - Assuming naive implementation of Array and Object types.
+2022-04-26 01:32:25.745 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2022-04-26 01:32:25.749 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2022-04-26 01:32:25.754 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-04-26 01:32:25.758 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2022-04-26 01:32:25.827 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2022-04-26 01:32:25.829 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2022-04-26 01:32:25.831 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2022-04-26 01:32:26.254 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-04-26 01:32:26.260 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel power_supply
+2022-04-26 01:32:26.311 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2022-04-26 01:32:26.478 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2022-04-26 01:32:26.480 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2022-04-26 01:32:26.483 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2022-04-26 01:32:26.484 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2022-04-26 01:32:26.509 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: c:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2022-04-26T01-30-27-419834.state.pickle... loading.
+2022-04-26 01:32:26.519 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2022-04-26 01:32:26.521 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2022-04-26 01:36:56.611 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2022-04-26 01:36:56.616 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2022-04-26 01:36:56.619 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2022-04-26 01:36:56.622 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2022-04-26 01:36:56.625 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2022-04-26 01:36:56.633 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2022-04-26 01:36:56.636 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2022-04-26 01:36:56.639 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2022-04-26 01:36:56.642 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2022-04-26 01:36:56.767 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2022-04-26 01:36:56.769 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2022-04-26 01:36:56.770 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2022-04-26 01:36:56.772 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2022-04-26 01:36:56.773 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2022-04-26 01:36:56.775 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]
+2022-04-26 01:36:56.777 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['pass_energy']
+2022-04-26 01:36:56.778 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['pass_energy']
+2022-04-26 01:36:56.780 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['voltages']
+2022-04-26 01:36:56.781 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['voltages']
+2022-04-26 01:36:56.783 | INFO     | autodidaqt.core:shutdown:446 - Graceful shutdown complete.
+2022-04-26 01:36:56.785 | INFO     | autodidaqt.core:shutdown:457 - Cancelling tasks...
+2022-04-26 01:36:56.786 | INFO     | autodidaqt.core:shutdown:470 - Waiting on finished tasks...
+2022-04-26 01:36:56.787 | INFO     | autodidaqt.core:shutdown:481 - Stopping loop
+2022-04-26 01:36:56.789 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

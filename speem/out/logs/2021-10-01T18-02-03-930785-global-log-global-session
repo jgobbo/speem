@@ -1,0 +1,45 @@
+2021-10-01 18:02:03.934 | WARNING  | autodidaqt_common.remote.schema:get_definition:208 - Improperly handled type ObjectType()
+2021-10-01 18:02:03.937 | WARNING  | autodidaqt_common.remote.schema:from_type:261 - Assuming naive implementation of Array and Object types.
+2021-10-01 18:02:03.939 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2021-10-01 18:02:03.941 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2021-10-01 18:02:03.942 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{name}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2021-10-01 18:02:03.943 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2021-10-01 18:02:04.013 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2021-10-01 18:02:04.014 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2021-10-01 18:02:04.016 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2021-10-01 18:02:04.504 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2021-10-01 18:02:04.509 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2021-10-01 18:02:05.041 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2021-10-01 18:02:05.188 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2021-10-01 18:02:05.241 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2021-10-01 18:02:05.243 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2021-10-01 18:02:05.245 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2021-10-01 18:02:05.246 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2021-10-01 18:02:05.247 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2021-10-01 18:02:05.251 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: C:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2021-10-01T18-01-55-195053.state.pickle... loading.
+2021-10-01 18:02:05.274 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2021-10-01 18:02:05.275 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2021-10-01 18:02:05.278 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:11.831 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:16.169 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:20.677 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:24.879 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:29.486 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:33.706 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:38.218 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:42.651 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 18:02:44.979 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2021-10-01 18:02:44.981 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2021-10-01 18:02:44.984 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2021-10-01 18:02:44.986 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2021-10-01 18:02:44.989 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2021-10-01 18:02:44.998 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2021-10-01 18:02:45.001 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2021-10-01 18:02:45.004 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2021-10-01 18:02:45.007 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2021-10-01 18:02:45.039 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2021-10-01 18:02:45.042 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2021-10-01 18:02:45.045 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2021-10-01 18:02:45.047 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2021-10-01 18:02:45.050 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2021-10-01 18:02:45.052 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]

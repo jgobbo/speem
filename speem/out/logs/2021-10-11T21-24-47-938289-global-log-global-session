@@ -1,0 +1,37 @@
+2021-10-11 21:24:47.946 | WARNING  | autodidaqt_common.remote.schema:get_definition:208 - Improperly handled type ObjectType()
+2021-10-11 21:24:47.950 | WARNING  | autodidaqt_common.remote.schema:from_type:261 - Assuming naive implementation of Array and Object types.
+2021-10-11 21:24:47.955 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2021-10-11 21:24:47.958 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2021-10-11 21:24:47.961 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{name}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2021-10-11 21:24:47.965 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2021-10-11 21:24:48.051 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2021-10-11 21:24:48.052 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2021-10-11 21:24:48.054 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2021-10-11 21:24:48.938 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2021-10-11 21:24:48.942 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2021-10-11 21:24:49.466 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2021-10-11 21:24:49.620 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2021-10-11 21:24:49.671 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2021-10-11 21:24:49.674 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2021-10-11 21:24:49.677 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2021-10-11 21:24:49.678 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2021-10-11 21:24:49.679 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2021-10-11 21:24:49.690 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: C:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2021-10-11T21-24-39-401459.state.pickle... loading.
+2021-10-11 21:24:49.704 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2021-10-11 21:24:49.705 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2021-10-11 21:26:43.271 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2021-10-11 21:26:43.272 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2021-10-11 21:26:43.274 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2021-10-11 21:26:43.276 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2021-10-11 21:26:43.277 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2021-10-11 21:26:43.282 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2021-10-11 21:26:43.284 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2021-10-11 21:26:43.286 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2021-10-11 21:26:43.288 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2021-10-11 21:26:43.291 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2021-10-11 21:26:43.293 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2021-10-11 21:26:43.294 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2021-10-11 21:26:43.295 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2021-10-11 21:26:43.296 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2021-10-11 21:26:43.298 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]
+2021-10-11 21:26:46.018 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

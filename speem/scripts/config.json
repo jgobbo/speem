@@ -1,0 +1,22 @@
+{
+  "version": "0.0.0",
+  "debug": true,
+
+  "logging": true,
+  "logging_directory": "out\\logs",
+  "log_format": "{time}-{user}-{session}",
+
+  "save_format": "pickle",
+  "data_directory": "out\\data",
+  "data_format": "{user}\\{date}-{session}-{run}",
+
+  "maintain_state": true,
+  "state_directory": "out\\state",
+
+  "instruments": {
+    "simulate_instruments": false
+  },
+
+  "use_profiles": false,
+  "profiles": {}
+}

@@ -1,0 +1,30 @@
+2022-01-10 18:52:57.054 | WARNING  | autodidaqt_common.remote.schema:from_type:250 - Assuming naive implementation of Array and Object types.
+2022-01-10 18:52:57.057 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2022-01-10 18:52:57.059 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2022-01-10 18:52:57.060 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-01-10 18:52:57.063 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2022-01-10 18:52:57.132 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2022-01-10 18:52:57.134 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2022-01-10 18:52:57.136 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2022-01-10 18:52:57.560 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-01-10 18:52:57.567 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2022-01-10 18:52:58.170 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2022-01-10 18:52:58.326 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2022-01-10 18:52:58.377 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2022-01-10 18:52:58.379 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2022-01-10 18:52:58.383 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2022-01-10 18:52:58.391 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2022-01-10 18:52:58.399 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2022-01-10 18:52:58.696 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: c:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2022-01-10T18-52-42-199511.state.pickle... loading.
+2022-01-10 18:52:58.730 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2022-01-10 18:52:58.737 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2022-01-10 18:54:13.449 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2022-01-10 18:54:13.463 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2022-01-10 18:54:13.478 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2022-01-10 18:54:13.494 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2022-01-10 18:54:13.505 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2022-01-10 18:54:13.523 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2022-01-10 18:54:13.534 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2022-01-10 18:54:13.541 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2022-01-10 18:54:13.557 | ERROR    | autodidaqt.core:handle_exception:382 - Caught Unhandled: Task was destroyed but it is pending!
+2022-01-10 18:54:13.568 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

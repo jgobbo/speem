@@ -1,0 +1,26 @@
+address, ramp, name,     description
+0,       -1,   L1V2,     Drift 1 Lens 2 Offset Voltage
+1,       -1,   L1V2B,    Drift 1 Lens 2 Secondary Offset Voltage
+2,       -1,   L1V1,     Drift 1 Lens 1 Offset Voltage
+3,       -1,   L1V1B,    Drift 1 Lens 1 Secondary Offset Voltage
+4,       -1,   IN,       Bandpass Input
+5,       -1,   OUT,      Bandpass Output
+6,       -1,   L2V1,     Drift 2 Lens 1 Offset Voltage
+7,       -1,   L2V2,     Drift 2 Lens 2 Offset Voltage
+8,       -1,   L3V1,     Straight Section Drift Offset Voltage
+9,       -1,   BPF_V0,   Bandpass Center
+11,      100,  DRET2,    Spin Detector
+12,      100,  MCP2,     Spin Detector MCP
+13,      100,  ANODE2,   Spin Detector Anode
+17,      100,  DRET3,    Straight Section Detector
+18,      100,  MCP3,     Straight Section MCP
+19,      100,  ANODE3,   Straight Section Anode
+D1,      -1,   L1V2C,    Drift 1 Lens 2 Fine Tuning Voltage
+D2,      -1,   L1V3,     Drift First Deflector Offset
+D3,      -1,   L1V4,     Drift Second Deflector Offset
+D4,      -1,   L2V2B,    Drift 2 Lens 2 Secondary Offset
+D5,      -1,   L2V3,     Drift 2 Lens 3
+D7,      -1,   DX1,      Deflector 1-X
+D8,      -1,   DY1,      Deflector 1-Y
+D9,      -1,   DX2,      Deflector 2-X
+D10,     -1,   DY2,      Deflector 2-Y

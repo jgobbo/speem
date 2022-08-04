@@ -1,0 +1,14 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'detector.frame': 'frames'}",
+      "time": "2022-07-18T19:13:15.936031"
+    },
+    {
+      "name": "Im tired",
+      "n_repeats": 2,
+      "frame_s": 1
+    }
+  ]
+}

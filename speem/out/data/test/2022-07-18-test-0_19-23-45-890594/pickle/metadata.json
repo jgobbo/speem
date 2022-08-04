@@ -1,0 +1,133 @@
+{
+  "metadata": [
+    {
+      "name": "Im tired",
+      "n_repeats": 3,
+      "frame_s": 1
+    },
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'detector.frame': 'frames'}",
+      "time": "2022-07-18T19:23:38.358693"
+    }
+  ],
+  "point_started": [
+    "2022-07-18T19:23:38.359685",
+    "2022-07-18T19:23:41.245597",
+    "2022-07-18T19:23:44.151724"
+  ],
+  "point_ended": [
+    "2022-07-18T19:23:40.009192",
+    "2022-07-18T19:23:44.151724",
+    "2022-07-18T19:23:45.867122"
+  ],
+  "steps_taken": [
+    {
+      "step": {
+        "call": [
+          [
+            1
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_frame_time"
+        ],
+        "scope": "detector"
+      },
+      "time": "2022-07-18T19:23:38.358693"
+    },
+    {
+      "step": [
+        {
+          "write": 0,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T19:23:38.359685"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T19:23:38.359685"
+    },
+    {
+      "step": [
+        {
+          "write": 1,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T19:23:41.245597"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T19:23:42.485722"
+    },
+    {
+      "step": [
+        {
+          "write": 2,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-07-18T19:23:44.151724"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-07-18T19:23:44.372448"
+    },
+    {
+      "step": {
+        "call": [
+          [
+            0.5
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_frame_time"
+        ],
+        "scope": "detector"
+      },
+      "time": "2022-07-18T19:23:45.867122"
+    }
+  ]
+}

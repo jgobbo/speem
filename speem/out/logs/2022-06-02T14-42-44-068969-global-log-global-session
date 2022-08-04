@@ -1,0 +1,49 @@
+2022-06-02 14:42:44.071 | WARNING  | autodidaqt_common.remote.schema:from_type:249 - Assuming naive implementation of Array and Object types.
+2022-06-02 14:42:44.085 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2022-06-02 14:42:44.086 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2022-06-02 14:42:44.086 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-06-02 14:42:44.089 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2022-06-02 14:42:44.115 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2022-06-02 14:42:44.116 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2022-06-02 14:42:44.117 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2022-06-02 14:42:44.312 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-06-02 14:42:44.313 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel detector
+2022-06-02 14:42:44.491 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer
+2022-06-02 14:42:44.540 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2022-06-02 14:42:44.590 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2022-06-02 14:42:44.618 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2022-06-02 14:42:44.619 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2022-06-02 14:42:44.818 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2022-06-02 14:42:44.827 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2022-06-02 14:42:44.831 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2022-06-02 14:42:45.037 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: C:\Users\SPEEM\Documents\peem-daq\out\state\2022-06-02T14-42-27-673957.state.pickle... loading.
+2022-06-02 14:42:45.069 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2022-06-02 14:42:45.080 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2022-06-02 14:42:55.219 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Start: 'start'>, 'to': <ExperimentStates.Running: 'RUNNING'>}, start
+2022-06-02 14:42:55.248 | ERROR    | autodidaqt.core:handle_exception:382 - Caught Unhandled: 'ProxiedAxis' object is not iterable
+2022-06-02 14:42:55.256 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2022-06-02 14:42:55.264 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2022-06-02 14:42:55.273 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2022-06-02 14:42:55.281 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2022-06-02 14:42:55.289 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2022-06-02 14:42:55.302 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2022-06-02 14:42:55.312 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2022-06-02 14:42:55.318 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2022-06-02 14:42:55.324 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2022-06-02 14:42:55.359 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['x']
+2022-06-02 14:42:55.366 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['x']
+2022-06-02 14:42:55.374 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['y']
+2022-06-02 14:42:55.388 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['y']
+2022-06-02 14:42:55.396 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['z']
+2022-06-02 14:42:55.406 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['z']
+2022-06-02 14:42:55.417 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2022-06-02 14:42:55.424 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2022-06-02 14:42:55.433 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2022-06-02 14:42:55.439 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2022-06-02 14:42:55.456 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2022-06-02 14:42:55.465 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]
+2022-06-02 14:42:58.333 | ERROR    | autodidaqt.core:shutdown:449 - Not all actors have shut down after 3.0 seconds. Bad actors are ['experiment', 'detector']
+2022-06-02 14:42:58.335 | WARNING  | autodidaqt.core:shutdown:455 - Cancelling tasks... 2 tasks remaining expected 1.
+2022-06-02 14:42:58.365 | INFO     | autodidaqt.core:shutdown:470 - Waiting on finished tasks...
+2022-06-02 14:42:58.401 | INFO     | autodidaqt.core:shutdown:481 - Stopping loop
+2022-06-02 14:42:58.421 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

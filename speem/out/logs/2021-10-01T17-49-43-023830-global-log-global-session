@@ -1,0 +1,151 @@
+2021-10-01 17:49:43.028 | WARNING  | autodidaqt_common.remote.schema:get_definition:208 - Improperly handled type ObjectType()
+2021-10-01 17:49:43.030 | WARNING  | autodidaqt_common.remote.schema:from_type:261 - Assuming naive implementation of Array and Object types.
+2021-10-01 17:49:43.032 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2021-10-01 17:49:43.033 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2021-10-01 17:49:43.034 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{name}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2021-10-01 17:49:43.035 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2021-10-01 17:49:43.107 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2021-10-01 17:49:43.108 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2021-10-01 17:49:43.111 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2021-10-01 17:49:43.593 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2021-10-01 17:49:43.597 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2021-10-01 17:49:44.150 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2021-10-01 17:49:44.303 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2021-10-01 17:49:44.355 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2021-10-01 17:49:44.357 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2021-10-01 17:49:44.359 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2021-10-01 17:49:44.360 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2021-10-01 17:49:44.362 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2021-10-01 17:49:44.365 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: C:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2021-10-01T17-49-32-267251.state.pickle... loading.
+2021-10-01 17:49:44.375 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2021-10-01 17:49:44.377 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2021-10-01 17:49:44.380 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:49:48.920 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:49:53.265 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:49:57.756 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:02.218 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:06.737 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:11.259 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:15.776 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:20.225 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:24.701 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:29.225 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:33.769 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:38.187 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:42.728 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:47.234 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:51.354 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:55.331 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:50:59.369 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:03.361 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:12.703 | WARNING  | daq.ether_daq.instrument:read_frame:127 - No communication with EtherDAQ: File not found after 9.0 seconds.
+2021-10-01 17:51:12.706 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:17.256 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:21.735 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:26.240 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:30.766 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:35.273 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:39.729 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:44.222 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:48.742 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:53.218 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:51:57.721 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:02.174 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:06.817 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:10.876 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:14.811 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:18.891 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:22.854 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:27.238 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:31.690 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:36.282 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:40.693 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:45.240 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:49.767 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:54.169 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:52:58.684 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:03.247 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:07.732 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:12.213 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:16.695 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:21.169 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:25.398 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:29.354 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:33.357 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:37.349 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:41.731 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:46.180 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:50.737 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:55.202 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:53:59.765 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:04.244 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:08.689 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:13.267 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:17.765 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:22.236 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:26.770 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:31.232 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:35.697 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:39.812 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:43.798 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:47.875 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:51.817 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:54:56.155 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:00.697 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:05.193 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:09.824 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:14.248 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:18.783 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:23.255 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:27.724 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:32.254 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:36.729 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:41.197 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:45.697 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:50.199 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:54.345 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:55:58.322 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:02.373 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:06.337 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:10.327 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:14.699 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:19.182 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:24.538 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:28.670 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:33.233 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:37.742 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:42.160 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:46.785 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:51.202 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:56:55.733 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:00.220 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:04.732 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:09.234 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:13.269 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:17.288 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:21.373 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:25.328 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:29.759 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:34.208 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:38.742 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:43.221 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:47.746 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:52.213 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:57:56.750 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:58:01.241 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:58:05.704 | INFO     | daq.ether_daq.instrument:write_communications_file:88 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 17:58:06.401 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2021-10-01 17:58:06.404 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2021-10-01 17:58:06.407 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2021-10-01 17:58:06.410 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2021-10-01 17:58:06.414 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2021-10-01 17:58:06.427 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2021-10-01 17:58:06.430 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2021-10-01 17:58:06.433 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2021-10-01 17:58:06.436 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2021-10-01 17:58:06.644 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2021-10-01 17:58:06.651 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2021-10-01 17:58:06.653 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2021-10-01 17:58:06.655 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2021-10-01 17:58:06.659 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2021-10-01 17:58:06.662 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]

@@ -1,0 +1,38 @@
+2022-07-19 14:57:42.530 | WARNING  | autodidaqt_common.remote.schema:from_type:249 - Assuming naive implementation of Array and Object types.
+2022-07-19 14:57:42.532 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2022-07-19 14:57:42.532 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2022-07-19 14:57:42.533 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-07-19 14:57:42.536 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2022-07-19 14:57:42.568 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2022-07-19 14:57:42.569 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2022-07-19 14:57:42.570 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2022-07-19 14:57:43.140 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-07-19 14:57:43.142 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer
+2022-07-19 14:57:43.211 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel detector
+2022-07-19 14:57:43.390 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2022-07-19 14:57:43.393 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2022-07-19 14:57:43.598 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2022-07-19 14:57:43.600 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2022-07-19 14:57:43.618 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: c:\Users\SPEEM\Documents\speem\speem\out\state\2022-07-19T14-57-05-439407.state.pickle... loading.
+2022-07-19 14:57:43.631 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2022-07-19 14:57:43.632 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2022-07-19 14:58:14.728 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2022-07-19 14:58:14.834 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2022-07-19 14:58:14.839 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2022-07-19 14:58:14.991 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2022-07-19 14:58:15.129 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2022-07-19 14:58:15.132 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2022-07-19 14:58:15.133 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2022-07-19 14:58:15.134 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2022-07-19 14:58:15.134 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2022-07-19 14:58:15.228 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['x']
+2022-07-19 14:58:15.938 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['x']
+2022-07-19 14:58:16.324 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['y']
+2022-07-19 14:58:16.851 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['y']
+2022-07-19 14:58:16.853 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['z']
+2022-07-19 14:58:16.855 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['z']
+2022-07-19 14:58:18.415 | ERROR    | autodidaqt.core:shutdown:449 - Not all actors have shut down after 3.0 seconds. Bad actors are ['detector']
+2022-07-19 14:58:19.437 | WARNING  | autodidaqt.core:shutdown:455 - Cancelling tasks... 2 tasks remaining expected 1.
+2022-07-19 14:58:19.439 | INFO     | autodidaqt.core:shutdown:470 - Waiting on finished tasks...
+2022-07-19 14:58:19.592 | INFO     | autodidaqt.core:shutdown:481 - Stopping loop
+2022-07-19 14:58:19.734 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

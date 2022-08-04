@@ -1,0 +1,150 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'analyzer.frame': 'frames'}",
+      "time": "2021-11-15T17:01:39.221912"
+    }
+  ],
+  "point_started": [
+    "2021-11-15T17:01:39.221912",
+    "2021-11-15T17:01:39.756701",
+    "2021-11-15T17:01:40.237511",
+    "2021-11-15T17:01:40.679337",
+    "2021-11-15T17:01:41.100172"
+  ],
+  "point_ended": [
+    "2021-11-15T17:01:39.611758",
+    "2021-11-15T17:01:40.236511",
+    "2021-11-15T17:01:40.677338",
+    "2021-11-15T17:01:41.099172",
+    "2021-11-15T17:01:41.492017"
+  ],
+  "steps_taken": [
+    {
+      "step": [
+        {
+          "write": 0,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2021-11-15T17:01:39.221912"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2021-11-15T17:01:39.400841"
+    },
+    {
+      "step": [
+        {
+          "write": 1,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2021-11-15T17:01:39.756701"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2021-11-15T17:01:39.974615"
+    },
+    {
+      "step": [
+        {
+          "write": 2,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2021-11-15T17:01:40.237511"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2021-11-15T17:01:40.405447"
+    },
+    {
+      "step": [
+        {
+          "write": 3,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2021-11-15T17:01:40.679337"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2021-11-15T17:01:40.852269"
+    },
+    {
+      "step": [
+        {
+          "write": 4,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2021-11-15T17:01:41.100172"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2021-11-15T17:01:41.248113"
+    }
+  ]
+}

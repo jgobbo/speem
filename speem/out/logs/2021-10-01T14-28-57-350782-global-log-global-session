@@ -1,0 +1,76 @@
+2021-10-01 14:28:57.354 | WARNING  | autodidaqt_common.remote.schema:get_definition:208 - Improperly handled type ObjectType()
+2021-10-01 14:28:57.355 | WARNING  | autodidaqt_common.remote.schema:from_type:261 - Assuming naive implementation of Array and Object types.
+2021-10-01 14:28:57.357 | INFO     | autodidaqt.core:start:768 - Application in startup.
+2021-10-01 14:28:57.359 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
+2021-10-01 14:28:57.361 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{name}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2021-10-01 14:28:57.362 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
+2021-10-01 14:28:57.452 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
+2021-10-01 14:28:57.453 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
+2021-10-01 14:28:57.456 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
+2021-10-01 14:28:57.934 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2021-10-01 14:28:57.943 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel analyzer
+2021-10-01 14:28:58.483 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2021-10-01 14:28:58.631 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel experiment
+2021-10-01 14:28:58.692 | INFO     | autodidaqt.core:master:548 - Started async loop.
+2021-10-01 14:28:58.694 | INFO     | autodidaqt.core:master:567 - Running actor .prepare
+2021-10-01 14:28:58.695 | INFO     | autodidaqt.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, initialize
+2021-10-01 14:28:58.702 | INFO     | autodidaqt.core:master:584 - Installing Qt event processing on the standard event loop
+2021-10-01 14:28:58.703 | INFO     | autodidaqt.core:load_state:690 - Loading application state.
+2021-10-01 14:28:58.707 | INFO     | autodidaqt.core:load_state:694 - Found candidate application state: C:\Users\admin.TOF-PEEM\Documents\peem-daq\out\state\2021-10-01T14-28-18-849407.state.pickle... loading.
+2021-10-01 14:28:58.726 | INFO     | autodidaqt.core:load_state:719 - Finished loading application state.
+2021-10-01 14:28:58.727 | INFO     | autodidaqt.core:master:589 - Main task is dropping into event loop
+2021-10-01 14:28:58.731 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:03.438 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:07.546 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:11.572 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:15.461 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:19.549 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:23.966 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:28.435 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:32.870 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:37.394 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:41.926 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:46.362 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:50.924 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:55.415 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:29:59.909 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:04.361 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:08.930 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:13.380 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:17.923 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:22.484 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:26.570 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:30.458 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:34.481 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:38.906 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:43.340 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:47.880 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:52.365 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:30:56.868 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:01.419 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:05.917 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:10.363 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:14.931 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:19.366 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:23.926 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:28.422 | INFO     | daq.ether_daq.instrument:write_communications_file:86 - EtherDAQDriver opened communications file to EtherDAQ: C:\Users\admin.TOF-PEEM\tmp\frame.txt
+2021-10-01 14:31:28.763 | WARNING  | autodidaqt.core:shutdown:417 - Shutting down due to exception.
+2021-10-01 14:31:28.765 | INFO     | autodidaqt.core:shutdown:419 - Shutting down process pool.
+2021-10-01 14:31:28.767 | INFO     | autodidaqt.core:shutdown:421 - Finished shutting down process pool.
+2021-10-01 14:31:28.769 | INFO     | autodidaqt.core:shutdown:423 - Saving...
+2021-10-01 14:31:28.771 | INFO     | autodidaqt.core:save_state:722 - Saving application state.
+2021-10-01 14:31:28.781 | INFO     | autodidaqt.core:save_state:730 - Finished saving application state.
+2021-10-01 14:31:28.783 | INFO     | autodidaqt.core:shutdown:427 - Application is still reading messages. Stopping...
+2021-10-01 14:31:28.785 | INFO     | autodidaqt.core:shutdown:431 - Sending graceful shutdown requests.
+2021-10-01 14:31:28.787 | INFO     | autodidaqt.core:shutdown:441 - Waiting graceful shutdown requests.
+2021-10-01 14:31:28.994 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 0]
+2021-10-01 14:31:28.998 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 0]
+2021-10-01 14:31:29.001 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 1]
+2021-10-01 14:31:29.008 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 1]
+2021-10-01 14:31:29.016 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:213 - Shutting down ['stages', 2]
+2021-10-01 14:31:29.020 | INFO     | autodidaqt.instrument.managed_instrument:shutdown:215 - Finished shutting down ['stages', 2]
+2021-10-01 14:31:31.796 | ERROR    | autodidaqt.core:shutdown:449 - Not all actors have shut down after 3.0 seconds. Bad actors are ['analyzer']
+2021-10-01 14:31:31.801 | WARNING  | autodidaqt.core:shutdown:455 - Cancelling tasks... 2 tasks remaining expected 1.
+2021-10-01 14:31:31.805 | INFO     | autodidaqt.core:shutdown:470 - Waiting on finished tasks...
+2021-10-01 14:31:31.809 | INFO     | autodidaqt.core:shutdown:481 - Stopping loop
+2021-10-01 14:31:31.813 | INFO     | autodidaqt.core:start:794 - Closed autodidaqt successfully.

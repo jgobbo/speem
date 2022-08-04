@@ -1,0 +1,10 @@
+2022-08-02 16:38:43.052 | WARNING  | autodidaqt_common.remote.schema:from_type:249 - Assuming naive implementation of Array and Object types.
+2022-08-02 16:38:43.053 | INFO     | autodidaqt.core:start:749 - Application in startup.
+2022-08-02 16:38:43.054 | INFO     | autodidaqt.core:start:750 - CommandLineConfig(headless=False, remote_config=None)
+2022-08-02 16:38:43.054 | INFO     | autodidaqt.core:start:751 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2022-08-02 16:38:43.055 | INFO     | autodidaqt.core:start:756 - Configuring Qt application and styles
+2022-08-02 16:38:43.097 | INFO     | autodidaqt.core:configure_event_loop:727 - Configuring async runtime
+2022-08-02 16:38:43.099 | INFO     | autodidaqt.core:configure_event_loop:734 - Using asyncio for async support.
+2022-08-02 16:38:43.100 | INFO     | autodidaqt.core:configure_event_loop:744 - Setting custom exception handler on async loop
+2022-08-02 16:38:43.318 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
+2022-08-02 16:38:43.320 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel detector

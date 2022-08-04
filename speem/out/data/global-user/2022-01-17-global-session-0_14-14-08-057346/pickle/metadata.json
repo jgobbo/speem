@@ -1,0 +1,210 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'analyzer.frame': 'frames', 'powermeter.device': 'power'}",
+      "time": "2022-01-17T14:13:32.800374"
+    }
+  ],
+  "point_started": [
+    "2022-01-17T14:13:32.800374",
+    "2022-01-17T14:13:41.048552",
+    "2022-01-17T14:13:49.225787",
+    "2022-01-17T14:13:55.507638",
+    "2022-01-17T14:14:01.510585"
+  ],
+  "point_ended": [
+    "2022-01-17T14:13:38.614389",
+    "2022-01-17T14:13:49.225787",
+    "2022-01-17T14:13:55.507638",
+    "2022-01-17T14:14:01.510585",
+    "2022-01-17T14:14:08.023357"
+  ],
+  "steps_taken": [
+    {
+      "step": [
+        {
+          "write": 0,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-01-17T14:13:32.800374"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2022-01-17T14:13:34.190898"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "device"
+          ],
+          "scope": "powermeter"
+        }
+      ],
+      "time": "2022-01-17T14:13:36.984942"
+    },
+    {
+      "step": [
+        {
+          "write": 1,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-01-17T14:13:41.048552"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2022-01-17T14:13:44.689307"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "device"
+          ],
+          "scope": "powermeter"
+        }
+      ],
+      "time": "2022-01-17T14:13:47.554325"
+    },
+    {
+      "step": [
+        {
+          "write": 2,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-01-17T14:13:49.225787"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2022-01-17T14:13:50.913210"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "device"
+          ],
+          "scope": "powermeter"
+        }
+      ],
+      "time": "2022-01-17T14:13:53.901188"
+    },
+    {
+      "step": [
+        {
+          "write": 3,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-01-17T14:13:55.507638"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2022-01-17T14:13:57.151076"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "device"
+          ],
+          "scope": "powermeter"
+        }
+      ],
+      "time": "2022-01-17T14:14:00.050085"
+    },
+    {
+      "step": [
+        {
+          "write": 4,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-01-17T14:14:01.510585"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "analyzer"
+        }
+      ],
+      "time": "2022-01-17T14:14:03.230997"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "device"
+          ],
+          "scope": "powermeter"
+        }
+      ],
+      "time": "2022-01-17T14:14:06.304945"
+    }
+  ]
+}

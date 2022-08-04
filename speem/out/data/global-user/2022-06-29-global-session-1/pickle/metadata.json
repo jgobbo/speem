@@ -1,0 +1,85 @@
+{
+  "metadata": [
+    {
+      "type": "comment",
+      "content": "Collating with: independent={'phony.stages.0': 'x'}, dependent={'detector.frame': 'frames'}",
+      "time": "2022-06-29T13:52:08.986282"
+    }
+  ],
+  "point_started": [
+    "2022-06-29T13:52:08.986282",
+    "2022-06-29T13:52:11.630330"
+  ],
+  "point_ended": [
+    "2022-06-29T13:52:10.213250",
+    "2022-06-29T13:52:14.388411"
+  ],
+  "steps_taken": [
+    {
+      "step": {
+        "call": [
+          [
+            1
+          ],
+          {}
+        ],
+        "path": [
+          "driver",
+          "set_frame_time"
+        ],
+        "scope": "detector"
+      },
+      "time": "2022-06-29T13:52:08.986282"
+    },
+    {
+      "step": [
+        {
+          "write": 0,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-06-29T13:52:08.986282"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-29T13:52:08.986282"
+    },
+    {
+      "step": [
+        {
+          "write": 1,
+          "path": [
+            "stages",
+            0
+          ],
+          "scope": "phony"
+        }
+      ],
+      "time": "2022-06-29T13:52:11.630330"
+    },
+    {
+      "step": [
+        {
+          "read": null,
+          "path": [
+            "frame"
+          ],
+          "scope": "detector"
+        }
+      ],
+      "time": "2022-06-29T13:52:12.492949"
+    }
+  ]
+}
