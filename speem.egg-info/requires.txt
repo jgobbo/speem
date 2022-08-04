@@ -1,8 +1,0 @@
-numba
-astropy
-scapy
-bitstruct
-aioprocessing
-ThorlabsPM100
-autodidaqt
-autodidaqt-common

@@ -65,7 +65,6 @@ class EtherDAQUDPDriver:
         return as_array
 
     async def bogus_read_frame(self):
-        print(f"{self.frame_time = }")
         await asyncio.sleep(self.frame_time)
         n_points = ceil(np.random.randint(5000, 10000) * self.frame_time)
         xs = np.random.randint(

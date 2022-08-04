@@ -1,9 +1,0 @@
-{
-  "metadata": [
-    {
-      "type": "comment",
-      "content": "Collating with: independent={'beam_pointer.x': 'laser_x', 'beam_pointer.y': 'laser_y', 'beam_pointer.z': 'laser_z'}, dependent={'detector.frame': 'frames'}",
-      "time": "2022-07-15T11:53:42.507507"
-    }
-  ]
-}

@@ -1,9 +1,0 @@
-2022-07-19 14:40:38.175 | INFO     | autodidaqt.core:start:768 - Application in startup.
-2022-07-19 14:40:38.176 | INFO     | autodidaqt.core:start:769 - CommandLineConfig(headless=False, remote_config=None)
-2022-07-19 14:40:38.177 | INFO     | autodidaqt.core:start:770 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'pickle', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
-2022-07-19 14:40:38.183 | INFO     | autodidaqt.core:start:775 - Configuring Qt application and styles
-2022-07-19 14:40:38.215 | INFO     | autodidaqt.core:configure_event_loop:746 - Configuring async runtime
-2022-07-19 14:40:38.216 | INFO     | autodidaqt.core:configure_event_loop:753 - Using asyncio for async support.
-2022-07-19 14:40:38.217 | INFO     | autodidaqt.core:configure_event_loop:763 - Setting custom exception handler on async loop
-2022-07-19 14:40:38.453 | INFO     | autodidaqt.core:launch_panel:130 - Opening panel _instrument_manager
-2022-07-19 14:40:38.455 | INFO     | autodidaqt.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer

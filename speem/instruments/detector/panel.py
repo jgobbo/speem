@@ -34,12 +34,12 @@ def _acc_into_marginal(target_marginal, count_list, ir, i_hori, i_vert, low, hig
     JITted code for reaccumulating marginals so that we can support large arrays.
     """
     # step through the electron list and accumulate those in range
-
     in_range = (count_list[:, ir] >= low) & (count_list[:, ir] <= high)
     for count in count_list[in_range]:
         target_marginal[count[i_hori], count[i_vert]] += 1
 
     # Conrad's original method. I think mine is way cooler. If performance issues come up, try using this instead.
+    # I wasn't able to detect a difference in testing but I didn't bother trying to time it.
     # for i in range(count_list.shape[0]):
     #     if low <= count_list[i, ir] <= high:
     #         target_marginal[count_list[i, i_hori], count_list[i, i_vert]] += 1
@@ -190,6 +190,8 @@ class DetectorPanel(BasicInstrumentPanel):
             new_time = 0.1
         elif new_time > 10:
             new_time = 10.0
+
+        self.instrument.driver.frame_time = new_time
 
     def toggle_show_only_latest(self, ui_value):
         self.show_only_latest = bool(ui_value)
