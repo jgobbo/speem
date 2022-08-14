@@ -1,2 +1,1 @@
-from .instrument import *
-from .panel import *
+from .instrument import DetectorController

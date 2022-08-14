@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from numpy import where
 import pyvisa as visa
 from ThorlabsPM100 import ThorlabsPM100
 import asyncio

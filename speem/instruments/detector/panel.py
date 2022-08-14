@@ -1,3 +1,4 @@
+import asyncio
 import time
 import numpy as np
 import pyqtgraph as pg
@@ -57,6 +58,22 @@ def _n_in_marginals(count_list: np.ndarray, x_range, y_range, t_range):
     )
 
     return np.count_nonzero(in_range)
+
+
+# @njit
+# async def _n_in_marginals(count_list: np.ndarray, x_range, y_range, t_range):
+#     return 1
+
+# # progressively cutting out counts that aren't in range and then counting what's left
+# in_range = (count_list[:, 0] >= x_range[0]) & (count_list[:, 0] <= x_range[1])
+# in_range = (count_list[in_range, 1] >= y_range[0]) & (
+#     count_list[in_range, 1] <= y_range[1]
+# )
+# in_range = (count_list[in_range, 2] >= t_range[0]) & (
+#     count_list[in_range, 2] <= t_range[1]
+# )
+
+# return await np.count_nonzero(in_range)
 
 
 class DetectorPanel(BasicInstrumentPanel):
@@ -135,16 +152,16 @@ class DetectorPanel(BasicInstrumentPanel):
         self.marginal_n_elec_list = []
 
     @debounce(1)
-    def recompute_marginal(self, marginal_index, recompute_counts=True):
+    def recompute_marginal(self, marginal_index):
         marginal_arr = self.get_marginal(marginal_index)
         marginal_arr[:] = 0
 
         low, high = self.get_bounds(marginal_index)
         ix, iy = self.get_other_marginal_indices(marginal_index)
 
-        electron_arrs = self.electron_arrs
-        if self.show_only_latest:
-            electron_arrs = electron_arrs[-1:]
+        electron_arrs = (
+            self.electron_arrs[-1:] if self.show_only_latest else self.electron_arrs
+        )
 
         for electron_arr in electron_arrs:
             _acc_into_marginal(
@@ -155,20 +172,58 @@ class DetectorPanel(BasicInstrumentPanel):
             if i != marginal_index:
                 self.replot_1d_marginal(i)
 
-        if recompute_counts:
-            self.marginal_n_elec = 0
-            for electron_arr in self.electron_arrs:
-                self.marginal_n_elec += self.n_in_marginals(electron_arr)
+        self.marginal_n_elec = 0
+        for electron_arr in self.electron_arrs:
+            self.marginal_n_elec += self.n_in_marginals(electron_arr)
 
-            self.marginal_interval_start_time = time.time()
-            self.marginal_n_elec_list = []
+        self.marginal_interval_start_time = time.time()
+        self.marginal_n_elec_list = []
 
     def recompute_all_marginals(self):
-        self.recompute_marginal(0, False)
-        self.recompute_marginal(1, False)
-        self.recompute_marginal(2, True)
+        electron_arrs = (
+            self.electron_arrs[-1:] if self.show_only_latest else self.electron_arrs
+        )
 
-    def n_in_marginals(self, electron_arr):
+        for i in range(3):
+            marginal_arr = self.get_marginal(i)
+            marginal_arr[:] = 0
+
+            low, high = self.get_bounds(i)
+            ix, iy = self.get_other_marginal_indices(i)
+
+            for electron_arr in electron_arrs:
+                _acc_into_marginal(marginal_arr, electron_arr, i, ix, iy, low, high)
+
+        for j in range(3):
+            self.replot_1d_marginal(j)
+
+        self.marginal_n_elec = 0
+        for electron_arr in self.electron_arrs:
+            self.marginal_n_elec += self.n_in_marginals(electron_arr)
+
+        self.marginal_interval_start_time = time.time()
+        self.marginal_n_elec_list = []
+
+    # def n_in_marginals(self, electron_arrs: list[np.ndarray]):
+    #     bounds = [self.get_bounds(i) for i in range(3)]
+
+    #     try:
+    #         loop = asyncio.get_running_loop()
+    #         ns = loop.run_until_complete(
+    #             asyncio.gather(
+    #                 *[
+    #                     _n_in_marginals(electron_arr, *bounds)
+    #                     for electron_arr in electron_arrs
+    #                 ]
+    #             )
+    #         )
+    #         return sum(ns)
+
+    #     except RuntimeError as e:
+    #         print(e)
+    #         return 0
+
+    def n_in_marginals(self, electron_arr: list[np.ndarray]):
         return _n_in_marginals(electron_arr, *[self.get_bounds(i) for i in range(3)])
 
     def update_averaging_time(self, new_time):

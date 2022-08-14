@@ -1,1 +1,1 @@
-from .instrument import *
+from .instrument import PowermeterController

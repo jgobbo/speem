@@ -1,4 +1,4 @@
-elecE:= 1eV sampleDist:= 3.0mm intAng:=30deg spotSize:=60.0um aper0D:= 2.0mm baseline:=  0.00V
+This table zeroes everything except the detector.
 V00  : 0
 V01  : 0
 V02  : 0
@@ -17,7 +17,7 @@ D02  : 0
 D10  : 0
 D11  : 0
 D12  : 0
-S0   : 0
-S1   : 0
-S2   : 0
-S3   : 0
+ST0   : 0
+ST1   : 0
+ST2   : 0
+ST3   : 0

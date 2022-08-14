@@ -2,6 +2,7 @@ import asyncio
 import numpy as np
 import itertools
 from math import ceil
+from scipy.stats import mode
 
 from autodidaqt import ManagedInstrument
 from autodidaqt.instrument import AxisSpecification
@@ -91,7 +92,7 @@ class DetectorController(ManagedInstrument):
     pause_live_reading = False
 
     # change to "bogus_read_frame" to simulate data instead
-    frame = AxisSpecification(ArrayType(), where=[], read="bogus_read_frame")
+    frame = AxisSpecification(ArrayType(), where=[], read="read_frame")
 
     async def prepare(self):
         self.driver.listener.start()
