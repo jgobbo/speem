@@ -1,4 +1,5 @@
-This table zeroes everything except the detector.
+This table zeroes everything.
+BASELINE : 0
 V00  : 0
 V01  : 0
 V02  : 0
@@ -11,13 +12,3 @@ V23  : 0
 V31  : 0
 V32  : 0
 V33  : 0
-D00  : 0  
-D01  : 0
-D02  : 0
-D10  : 0
-D11  : 0
-D12  : 0
-ST0   : 0
-ST1   : 0
-ST2   : 0
-ST3   : 0

@@ -60,22 +60,6 @@ def _n_in_marginals(count_list: np.ndarray, x_range, y_range, t_range):
     return np.count_nonzero(in_range)
 
 
-# @njit
-# async def _n_in_marginals(count_list: np.ndarray, x_range, y_range, t_range):
-#     return 1
-
-# # progressively cutting out counts that aren't in range and then counting what's left
-# in_range = (count_list[:, 0] >= x_range[0]) & (count_list[:, 0] <= x_range[1])
-# in_range = (count_list[in_range, 1] >= y_range[0]) & (
-#     count_list[in_range, 1] <= y_range[1]
-# )
-# in_range = (count_list[in_range, 2] >= t_range[0]) & (
-#     count_list[in_range, 2] <= t_range[1]
-# )
-
-# return await np.count_nonzero(in_range)
-
-
 class DetectorPanel(BasicInstrumentPanel):
     TITLE = "Detector"
     SIZE = (800, 400)
@@ -204,39 +188,24 @@ class DetectorPanel(BasicInstrumentPanel):
         self.marginal_interval_start_time = time.time()
         self.marginal_n_elec_list = []
 
-    # def n_in_marginals(self, electron_arrs: list[np.ndarray]):
-    #     bounds = [self.get_bounds(i) for i in range(3)]
-
-    #     try:
-    #         loop = asyncio.get_running_loop()
-    #         ns = loop.run_until_complete(
-    #             asyncio.gather(
-    #                 *[
-    #                     _n_in_marginals(electron_arr, *bounds)
-    #                     for electron_arr in electron_arrs
-    #                 ]
-    #             )
-    #         )
-    #         return sum(ns)
-
-    #     except RuntimeError as e:
-    #         print(e)
-    #         return 0
-
     def n_in_marginals(self, electron_arr: list[np.ndarray]):
         return _n_in_marginals(electron_arr, *[self.get_bounds(i) for i in range(3)])
 
     def update_averaging_time(self, new_time):
-        self.averaging_time = float(new_time)
-        # validator isn't working for some reason
-        if self.averaging_time < 0.5:
-            self.averaging_time = 0.5
-        elif self.averaging_time > 1000:
-            self.averaging_time = 1000.0
+        try:
+            self.averaging_time = float(new_time)
 
-        self.interval_start_time = time.time()
-        self.n_elec_list = []
-        self.marginal_n_elec_list = []
+            # validator isn't working for some reason
+            if self.averaging_time < 0.5:
+                self.averaging_time = 0.5
+            elif self.averaging_time > 1000:
+                self.averaging_time = 1000.0
+
+            self.interval_start_time = time.time()
+            self.n_elec_list = []
+            self.marginal_n_elec_list = []
+        except ValueError:
+            pass
 
     def update_frame_time(self, new_time):
         new_time = float(new_time)
@@ -384,9 +353,16 @@ class DetectorPanel(BasicInstrumentPanel):
         self.y_bounds.subscribe(lambda *_: self.recompute_marginal(1))
         self.t_bounds.subscribe(lambda *_: self.recompute_marginal(2))
 
-        self.image_x.setFixedSize(self.DATA_SIZE[1], self.DATA_SIZE[2])
-        self.image_y.setFixedSize(self.DATA_SIZE[0], self.DATA_SIZE[2])
-        self.image_t.setFixedSize(self.DATA_SIZE[0], self.DATA_SIZE[1])
+        multiplier = 1.5
+        self.image_x.setFixedSize(
+            self.DATA_SIZE[1] * multiplier, self.DATA_SIZE[2] * multiplier
+        )
+        self.image_y.setFixedSize(
+            self.DATA_SIZE[0] * multiplier, self.DATA_SIZE[2] * multiplier
+        )
+        self.image_t.setFixedSize(
+            self.DATA_SIZE[0] * multiplier, self.DATA_SIZE[1] * multiplier
+        )
 
         self.image_x.setImage(self.data_x, keep_levels=True)
         self.image_y.setImage(self.data_y, keep_levels=True)
@@ -397,7 +373,7 @@ class DetectorPanel(BasicInstrumentPanel):
 
         self.retrieve(["frame"]).raw_value_stream.subscribe(
             self.update_frame
-        )  # subscribe to updates from spectrometer
+        )  # subscribe to updates from instrument
 
     def update_frame(self, value):
         value = value["value"]

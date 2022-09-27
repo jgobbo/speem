@@ -50,7 +50,7 @@ app = AutodiDAQt(
     managed_instruments={
         "detector": DetectorController,
         "power_supply": PowerSupplyController,
-        # "beam_pointer": BeamPointerController,
+        "beam_pointer": BeamPointerController,
         # "power_meter": PowermeterController,
         "phony": MockMotionController,
     },
