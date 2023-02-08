@@ -11,18 +11,17 @@ from modbus_tk.defines import (
 from modbus_tk.modbus_tcp import TcpMaster
 from modbus_tk.exceptions import ModbusError
 
-# TODO test voltage coercion
 
 __all__ = [
     "RudiHV",
     "RudiDAC",
 ]
 
-IP_ADDRESS = "192.168.202.4"
+IP_ADDRESS = "192.168.202.2"
 BYTE = 1
 WORD = 2
-VOLTS_TO_MILLIVOLTS = 10 ** 3
-VOLTS_TO_MICROVOLTS = 10 ** 6
+VOLTS_TO_MILLIVOLTS = 10**3
+VOLTS_TO_MICROVOLTS = 10**6
 
 
 def hex_tc(value: int, n_bits: int = 32):
@@ -39,7 +38,7 @@ def data_to_integer(data: list[int], n_bits: int = 32) -> int:
     dataL = data[0] << (n_bits // 2)
     dataLR = dataL | data[1]
     if (dataLR >> (n_bits - 1)) == 1:
-        dataLR = dataLR - (2 ** n_bits)
+        dataLR = dataLR - (2**n_bits)
     return dataLR
 
 
@@ -154,7 +153,7 @@ DEFAULT_RANGES = {
 @dataclass
 class HVAddress:
     """
-    Map of addresses of HV card registers 
+    Map of addresses of HV card registers
     that are queried using the ModbusTCP protocol.
     """
 
@@ -195,18 +194,20 @@ class RudiHV:
     low_range: FloatRange = None
     min_output: float = 0.0
     mode: HVMode = None
+    shorted_on_startup: bool = None
 
     def __post_init__(self):
-        self.master = TcpMaster(self.rudi_ip_address, timeout_in_sec=0.1)
+        self.master = TcpMaster(self.rudi_ip_address, timeout_in_sec=0.5)
 
         status = self.get_status()
         self.is_dual_channel = status & 0b01000000 != 0
 
         self.mode = self.get_mode()
         if self.mode is HVMode.SHORT_OUTPUT:
+            self.shorted_on_startup = True
             self.get_ranges()
         else:
-            logger.warning(f"Using default ranges for module {self.module_address}.")
+            self.shorted_on_startup = False
             self.low_range, self.high_range = DEFAULT_RANGES[self.module_address]
 
     def get_ranges(self):
@@ -225,7 +226,10 @@ class RudiHV:
             return 0
 
         data = self.master.execute(
-            self.module_address, READ_HOLDING_REGISTERS, self.addresses.VOLTAGE, WORD,
+            self.module_address,
+            READ_HOLDING_REGISTERS,
+            self.addresses.VOLTAGE,
+            WORD,
         )
         voltage = data_to_integer(data) / VOLTS_TO_MILLIVOLTS
         return (
@@ -245,7 +249,7 @@ class RudiHV:
         return voltage
 
     def set_setpoint(self, voltage: float) -> None:
-        print(f"{self.module_address} : {voltage}")
+        # print(f"{self.module_address} : {voltage}")
 
         if voltage == 0:
             return self.set_mode(HVMode.SHORT_OUTPUT)
@@ -327,7 +331,10 @@ class RudiHV:
 
     def get_status(self):
         return self.master.execute(
-            self.module_address, READ_HOLDING_REGISTERS, self.addresses.STATUS, BYTE,
+            self.module_address,
+            READ_HOLDING_REGISTERS,
+            self.addresses.STATUS,
+            BYTE,
         )[0]
 
     def get_version(self):
@@ -364,7 +371,7 @@ class RudiHV:
 @dataclass
 class DACAddress:
     """
-    Map of addresses of DAC card registers 
+    Map of addresses of DAC card registers
     that are queried using the ModbusTCP protocol.
     """
 
@@ -407,7 +414,7 @@ class RudiDAC:
         return voltage / VOLTS_TO_MICROVOLTS
 
     def set_setpoint(self, voltage: float) -> None:
-        print(f"{self.module_address} : {voltage}")
+        # print(f"{self.module_address} : {voltage}")
 
         if voltage in self.range:
             return self._set_setpoint(voltage)
@@ -430,7 +437,10 @@ class RudiDAC:
 
     def get_status(self):
         return self.master.execute(
-            self.module_address, READ_HOLDING_REGISTERS, self.addresses.STATUS, BYTE,
+            self.module_address,
+            READ_HOLDING_REGISTERS,
+            self.addresses.STATUS,
+            BYTE,
         )[0]
 
     def get_version(self):

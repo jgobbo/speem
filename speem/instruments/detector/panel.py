@@ -1,8 +1,8 @@
-import asyncio
 import time
 import numpy as np
 import pyqtgraph as pg
 from numba import njit
+from functools import partial
 
 from autodidaqt.panels import BasicInstrumentPanel
 from autodidaqt.ui.timing import debounce
@@ -25,6 +25,11 @@ from autodidaqt.ui.pg_extras import (
 )
 
 from .common import DetectorSettings
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .instrument import DetectorController
 
 __all__ = ("DetectorPanel",)
 
@@ -65,6 +70,7 @@ class DetectorPanel(BasicInstrumentPanel):
     SIZE = (800, 400)
     DEFAULT_OPEN = True
     settings = DetectorSettings
+    instrument: "DetectorController"
 
     DATA_SIZE = (DetectorSettings.data_size,) * 3
 
@@ -93,6 +99,7 @@ class DetectorPanel(BasicInstrumentPanel):
     y_bounds = LensSubject((0, DATA_SIZE[2]))
 
     show_only_latest = True
+    save_only_latest = True
     show_cursors = True
 
     start_time: float = None
@@ -208,7 +215,10 @@ class DetectorPanel(BasicInstrumentPanel):
             pass
 
     def update_frame_time(self, new_time):
-        new_time = float(new_time)
+        try:
+            new_time = float(new_time)
+        except ValueError:
+            new_time = 0.5
         # validator isn't working for some reason
         if new_time < 0.1:
             new_time = 0.1
@@ -217,8 +227,22 @@ class DetectorPanel(BasicInstrumentPanel):
 
         self.instrument.driver.frame_time = new_time
 
+    @debounce(0.15)  # need to add parens?
+    def update_timing_delay(self, new_time):
+        try:
+            new_time = float(new_time)
+
+            self.instrument.driver.timing_delay = new_time
+            # self.ui["timing_delay"].setText(f"{new_time}")
+        except ValueError:
+            pass
+
     def toggle_show_only_latest(self, ui_value):
         self.show_only_latest = bool(ui_value)
+        self.recompute_all_marginals()
+
+    def toggle_save_only_latest(self, ui_value):
+        self.save_only_latest = bool(ui_value)
         self.recompute_all_marginals()
 
     def toggle_show_cursors(self, ui_value):
@@ -287,6 +311,7 @@ class DetectorPanel(BasicInstrumentPanel):
                     group(
                         button("Clear", id="clear-integration"),
                         check_box("Show only latest", id="show-only-latest"),
+                        check_box("Save only latest", id="save-only-latest"),
                         check_box("Show cursors", default=True, id="show-cursors"),
                     ),
                     group(
@@ -329,6 +354,16 @@ class DetectorPanel(BasicInstrumentPanel):
                                 id="frame-time",
                             ),
                         ),
+                        horizontal(
+                            "Timing Delay [ns]:",
+                            button("<<", id="delay_dd"),
+                            button("<", id="delay_d"),
+                            numeric_input(
+                                self.instrument.driver.timing_delay, id="timing_delay"
+                            ),
+                            button(">", id="delay_u"),
+                            button(">>", id="delay_uu"),
+                        ),
                     ),
                     group("total counts", label("0", id="total-counts")),
                 ),
@@ -345,9 +380,20 @@ class DetectorPanel(BasicInstrumentPanel):
 
         self.ui["clear-integration"].subject.subscribe(self.reset)
         self.ui["show-only-latest"].subject.subscribe(self.toggle_show_only_latest)
+        self.ui["save-only-latest"].subject.subscribe(self.toggle_save_only_latest)
         self.ui["show-cursors"].subject.subscribe(self.toggle_show_cursors)
         self.ui["averaging_time"].subject.subscribe(self.update_averaging_time)
         self.ui["frame-time"].subject.subscribe(self.update_frame_time)
+
+        def shift_timing_delay(shift, _button_val):
+            curr_delay = float(self.ui["timing_delay"].text())
+            self.ui["timing_delay"].setText(str(curr_delay + shift))
+
+        self.ui["timing_delay"].subject.subscribe(self.update_timing_delay)
+        for button_name, shift in zip(
+            ["delay_dd", "delay_d", "delay_u", "delay_uu"], [-10, -1, 1, 10]
+        ):
+            self.ui[button_name].subject.subscribe(partial(shift_timing_delay, shift))
 
         self.x_bounds.subscribe(lambda *_: self.recompute_marginal(0))
         self.y_bounds.subscribe(lambda *_: self.recompute_marginal(1))
@@ -367,6 +413,15 @@ class DetectorPanel(BasicInstrumentPanel):
         self.image_x.setImage(self.data_x, keep_levels=True)
         self.image_y.setImage(self.data_y, keep_levels=True)
         self.image_t.setImage(self.data_t, keep_levels=True)
+        # self.image_t.plot_item.addItem(
+        #     pg.CircleROI(
+        #         [
+        #             self.DATA_SIZE[0] * multiplier / 2,
+        #             self.DATA_SIZE[1] * multiplier / 2,
+        #         ],
+        #         radius=100,
+        #     )
+        # )
         self.image_x.show()
         self.image_y.show()
         self.image_t.show()
@@ -411,7 +466,11 @@ class DetectorPanel(BasicInstrumentPanel):
         return low, high
 
     def get_marginal(self, marginal_index):
-        return {0: self.data_x, 1: self.data_y, 2: self.data_t,}[marginal_index]
+        return {
+            0: self.data_x,
+            1: self.data_y,
+            2: self.data_t,
+        }[marginal_index]
 
     def get_other_marginal_indices(self, marginal_index):
         return [i for i in [0, 1, 2] if i != marginal_index]
@@ -444,8 +503,12 @@ class DetectorPanel(BasicInstrumentPanel):
 
     def receive_frame(self, raw_frame: np.ndarray):
         frame: np.ndarray = raw_frame // self.settings.data_reduction
+        if self.save_only_latest:
+            self.reset()
+            self.electron_arrs = [frame]
+        else:
+            self.electron_arrs.append(frame)
         self.acc_marginals(frame)
-        self.electron_arrs.append(frame)
 
         for image, data in zip(
             [self.image_x, self.image_y, self.image_t],

@@ -36,17 +36,30 @@ class PowerSupplyPanel(BasicInstrumentPanel):
     settings = PowerSupplySettings
     instrument: "PowerSupplyController"
 
-    D0X = {Corrector.D00: -1, Corrector.D01: 1}
-    D0Y = {Corrector.D02: 1}
-    STX = {Corrector.ST0: 1, Corrector.ST1: -1}
-    STY = {Corrector.ST2: 1, Corrector.ST3: -1}
-    D1X = {Corrector.D10: 1, Corrector.D12: -1}
-    D1Y = {Corrector.D11: 1}
+    DFX = {
+        Corrector.D00: 1,
+        Corrector.D02: -1,
+        Corrector.D10: -1,
+        Corrector.D12: 1,
+    }  # maybe should be x2 on the second set
+    DFY = {Corrector.D01: -1, Corrector.D11: 1}
 
-    # D0X = {Corrector.D00: 1, Corrector.D02: -1, Corrector.D10: 2, Corrector.D12: -2}
-    # D0Y = {Corrector.D01: 1, Corrector.D11: -2}
-    # STX = {Corrector.ST0: 1, Corrector.ST3: -1}
-    # STY = {Corrector.ST1: 1, Corrector.ST2: -1}
+    STA = {
+        Corrector.ST0: 1,
+    }
+    STB = {Corrector.ST1: 1, Corrector.ST2: -1}
+
+    # D0X = {Corrector.D00: 1, Corrector.D02: -1}
+    # D0Y = {Corrector.D01: 1}
+    # D1X = {Corrector.D10: 1, Corrector.D12: -1}
+    # D1Y = {Corrector.D11: 1}
+
+    D00 = {Corrector.D00: 1}
+    D01 = {Corrector.D01: 1}
+    D02 = {Corrector.D02: 1}
+    D10 = {Corrector.D10: 1}
+    D11 = {Corrector.D11: 1}
+    D12 = {Corrector.D12: 1}
 
     def assign_lens_table(self, ui_value):
         if ui_value:
@@ -81,9 +94,12 @@ class PowerSupplyPanel(BasicInstrumentPanel):
     def apply_corrector(self, corrector: str, voltage: str):
         voltage = safe_float(voltage)
 
-        configuration: dict[Corrector, int] = getattr(self, corrector)
+        if isinstance(corrector, Corrector):
+            configuration = {corrector: 1}
+        else:
+            configuration: dict[Corrector, int] = getattr(self, corrector)
         for corrector, multiplier in configuration.items():
-            print(f"{corrector}: {multiplier}")
+            # print(f"{corrector}: {multiplier}")
             self.instrument.driver.apply_voltage(
                 corrector, safe_float(voltage * multiplier)
             )
@@ -136,14 +152,18 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 next_voltage -= 500
             await self._apply_anode(0)
 
-            self.instrument.driver.apply_voltage(Detector.MCP, 0)
-            self.ui[Detector.MCP.name].setText(str(0))
+            for detector in [Detector.MCP, Detector.GRID]:
+                self.instrument.driver.apply_voltage(detector, 0)
+                self.ui[detector.name].setText(str(0))
 
     def layout(self):
         def terminal_layout(name: str, terminals: list[Terminal]):
             def terminal_numeric(terminal: Terminal):
                 if terminal not in self.settings.terminal_configuration:
-                    input = numeric_input("n/a", id=terminal.name,)
+                    input = numeric_input(
+                        "n/a",
+                        id=terminal.name,
+                    )
                     input.setStyleSheet("background-color:rgb(255,90,90);")
                 else:
                     input = numeric_input(
@@ -218,26 +238,47 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                         "Imaging Lenses",
                         terminal_layout("baseline", [Electrode.BASELINE]),
                         terminal_layout(
-                            "lens 0", [Electrode.V00, Electrode.V01, Electrode.V02],
+                            "lens 0",
+                            [Electrode.V00, Electrode.V01, Electrode.V02],
                         ),
                         terminal_layout(
-                            "lens 1", [Electrode.V11, Electrode.V12, Electrode.V13],
+                            "lens 1",
+                            [Electrode.V11, Electrode.V12, Electrode.V13],
                         ),
                         terminal_layout(
-                            "lens 2", [Electrode.V21, Electrode.V22, Electrode.V23],
+                            "lens 2",
+                            [Electrode.V21, Electrode.V22, Electrode.V23],
                         ),
                         terminal_layout(
-                            "lens 3", [Electrode.V31, Electrode.V32, Electrode.V33],
+                            "lens 3",
+                            [Electrode.V31, Electrode.V32, Electrode.V33],
                         ),
                     ),
                     group(
                         "Correction Lenses",
-                        element_layout("deflector 0", ["D0X", "D0Y"],),
-                        element_layout("stigmator", ["STX", "STY"],),
-                        element_layout("deflector 1", ["D1X", "D1Y"],),
+                        element_layout("deflector", ["DFX", "DFY"]),
+                        element_layout(
+                            "stigmator",
+                            ["STA", "STB"],
+                        ),
+                        # element_layout("deflector 0", ["D0X", "D0Y"],),
+                        # element_layout("deflector 1", ["D1X", "D1Y"],),
+                        terminal_layout(
+                            "deflector 0",
+                            [Corrector.D00, Corrector.D01, Corrector.D02],
+                        ),
+                        terminal_layout(
+                            "deflector 1",
+                            [Corrector.D10, Corrector.D11, Corrector.D12],
+                        ),
                     ),
                     terminal_layout(
-                        "detector", [Detector.MESH, Detector.MCP, Detector.ANODE,],
+                        "detector",
+                        [
+                            Detector.GRID,
+                            Detector.MCP,
+                            Detector.ANODE,
+                        ],
                     ),
                 ),
                 horizontal(
@@ -267,7 +308,7 @@ class PowerSupplyPanel(BasicInstrumentPanel):
             "apply-table", [electrode.name for electrode in Electrode], self.ui
         ).subscribe(self.apply_table)
 
-        for element in ["D0X", "D0Y", "STX", "STY", "D1X", "D1Y"]:
+        for element in ["DFX", "DFY", "STA", "STB"]:
             self.ui[element].subject.subscribe(
                 functools.partial(self.apply_corrector, element)
             )

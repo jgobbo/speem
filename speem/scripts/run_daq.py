@@ -4,6 +4,9 @@ import numpy as np
 from autodidaqt import AutodiDAQt, Experiment
 from autodidaqt.mock import MockMotionController
 from speem.instruments import *
+from speem.instruments.power_supply.common import Electrode
+
+from datetime import date
 
 
 @dataclass
@@ -22,8 +25,12 @@ class RepeatScan:
     ):
         experiment.collate(
             independent=[[phony.stages[0], "x"]],
-            dependent=[[detector.frame, "frames"],],
+            dependent=[
+                [detector.frame, "frames"],
+            ],
         )
+
+        # backup_frame_time = detector.driver.frame_time
 
         yield detector.driver.set_frame_time(self.frame_s)
         # yield setattr
@@ -40,21 +47,109 @@ class RepeatScan:
         return dict(name=self.name, n_repeats=self.n_repeats, frame_s=self.frame_s)
 
 
+@dataclass
+class ScanElectrode:
+    name: str = "electrode scan"
+
+    electrode: Electrode = Electrode.V13
+    start: float = 0.0
+    step: float = 0.5
+    stop: float = 20
+
+    frame_time: float = 5.0
+
+    @property
+    def metadata(self):
+        return dict(
+            name=self.name,
+            electrode=self.electrode,
+            start=self.start,
+            step=self.step,
+            stop=self.stop,
+            frame_time=self.frame_time,
+        )
+
+    def sequence(
+        self,
+        experiment: Experiment,
+        detector: DetectorController,
+        power_supply: PowerSupplyController,
+        phony: MockMotionController,
+        **kwargs,
+    ):
+        experiment.collate(
+            independent=[[phony.stages[0], self.electrode.name]],
+            dependent=[[detector.frame, "frames"]],
+        )
+
+        # original_frame_time = detector.driver.frame_time
+        yield [detector.frame_time.write(self.frame_time)]
+
+        voltage = self.start
+        while abs(voltage) < abs(self.stop):
+            with experiment.point():
+                yield power_supply.driver.apply_voltage(self.electrode, voltage)
+                yield [phony.stages[0].write(voltage)]
+                yield [detector.frame.read()]
+
+            voltage += self.step
+
+        yield power_supply.driver.apply_voltage(self.electrode, self.stop)
+        yield [phony.stages[0].write(self.stop)]
+        yield [detector.frame.read()]
+
+        yield power_supply.driver.apply_voltage(self.electrode, 0)
+        # using original_frame_time here is causing circular dependencies when saving
+        # very strange
+        yield detector.driver.set_frame_time(0.5)
+
+
+@dataclass
+class CalibrateToF:
+    filename: str = date.today().strftime("%Y_%m_%d")
+    starting_delay: float = 0
+    ending_delay: float = 0
+
+    def sequence(self, experiment: Experiment, detector: DetectorController):
+        pass
+
+
 class SPEEMExperiment(Experiment):
-    scan_methods = [RepeatScan]
+    scan_methods = [RepeatScan, ScanElectrode]
 
 
 app = AutodiDAQt(
     __name__,
-    actors={"experiment": SPEEMExperiment,},
+    actors={
+        "experiment": SPEEMExperiment,
+    },
     managed_instruments={
         "detector": DetectorController,
         "power_supply": PowerSupplyController,
-        "beam_pointer": BeamPointerController,
+        # "beam_pointer": BeamPointerController,
         # "power_meter": PowermeterController,
         "phony": MockMotionController,
     },
 )
 
 if __name__ == "__main__":
-    app.start()
+    from cProfile import Profile
+    import pstats
+
+    with Profile() as pr:
+        app.start()
+
+    stats = pstats.Stats(pr)
+    stats.sort_stats(pstats.SortKey.TIME)
+    stats.dump_stats(filename="random.prof")
+
+    # app.start()
+
+    # try:
+    #     app.start()
+    # except:
+    #     import pdb, traceback, sys
+
+    #     extype, value, tb = sys.exc_info()
+    #     traceback.print_exc()
+    #     pdb.post_mortem(tb)

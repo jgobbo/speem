@@ -23,6 +23,7 @@ INSTALL_REQUIRES = [
     "ThorlabsPM100",
     "autodidaqt",
     "autodidaqt-common",
+    "modbus_tk",
 ]
 
 setup(

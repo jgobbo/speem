@@ -149,7 +149,10 @@ class BeamPointerPanel(BasicInstrumentPanel):
     def collect_frame(self, frame):
         if self.scanning:
             self.arr[self.i_x, self.i_y] = len(frame["value"])
-            self.image.setImage(self.arr, keep_levels=False)
+            # TODO - set meaningful tick labels
+            self.image.setImage(
+                self.arr, keep_levels=False,
+            )
 
             self.i_y += 1
             if self.i_y >= self.n_ys:

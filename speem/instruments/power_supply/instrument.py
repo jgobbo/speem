@@ -1,9 +1,16 @@
-import os, asyncio, socket
+import os, socket
 from typing import Union
 from pathlib import Path
 from colorama import Fore, Style
+from enum import Enum
+from loguru import logger
 
 from autodidaqt import ManagedInstrument
+from autodidaqt.instrument.spec import (
+    AxisListSpecification,
+    ChoicePropertySpecification,
+)
+from autodidaqt_common.schema import ObjectType
 
 from .common import *
 from .rudi_modules import *
@@ -26,16 +33,23 @@ class RudiEA2Driver:
     ramp_rate: int = 50  # V/s
 
     def __init__(self) -> None:
+        not_shorted = []
         for terminal, address in self.settings.terminal_configuration.items():
             try:
                 if address > 31:
                     self.modules[terminal] = RudiDAC(address)
                 else:
                     self.modules[terminal] = RudiHV(address)
+                    if not self.modules[terminal].shorted_on_startup:
+                        not_shorted.append(terminal)
             except socket.timeout:
                 raise Exception(
-                    f"Power-supply terminal {terminal} failed to connect at address {address}."
+                    f"Power-supply terminal {terminal} timed out trying to connect at address {address}."
                 )
+        if not_shorted:
+            logger.warning(
+                f"Terminals:{not_shorted} weren't shut down properly. Using default voltage ranges for them."
+            )
 
     def corrected_table(self, table: dict[Electrode, float]) -> dict[str, float]:
         """
@@ -142,6 +156,9 @@ class PowerSupplyController(ManagedInstrument):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.import_lens_tables()
+        self.lens_table = ChoicePropertySpecification(
+            where=[], choices=self.lens_tables, labels=lambda table, _: table.name
+        )
 
     def import_table_file(self, filepath: Path):
         with open(filepath, "r") as f:
@@ -164,3 +181,4 @@ class PowerSupplyController(ManagedInstrument):
             self.lens_tables.append(
                 self.import_table_file(self.TABLE_FOLDER / filename)
             )
+

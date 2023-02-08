@@ -10,9 +10,9 @@ class DetectorSettings:
     n_iterations: int = 5
     output_file_name: str = ""
 
-    input_size: int = 4096
+    bins_per_channel: int = 4096
     data_reduction: int = 8
-    data_size: int = input_size // data_reduction
+    data_size: int = bins_per_channel // data_reduction
 
     def as_message(self) -> str:
         return [

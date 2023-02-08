@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-class Electrode(Enum):
+class Electrode(str, Enum):  # str subclassing required for json serialization
     BASELINE = auto()
     V00 = auto()
     V01 = auto()
@@ -51,7 +51,7 @@ class Corrector(Enum):
 
 
 class Detector(Enum):
-    MESH = auto()
+    GRID = auto()
     MCP = auto()
     ANODE = auto()
 
@@ -113,7 +113,7 @@ nominal_configuration = {
     Corrector.ST0: 40,
     Corrector.ST1: 41,
     Corrector.ST2: 42,
-    Corrector.ST3: 43,
+    Detector.GRID: 44,
 }
 
 
