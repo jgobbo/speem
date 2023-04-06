@@ -12,7 +12,7 @@ from autodidaqt.instrument import AxisSpecification
 from autodidaqt_common.schema import ArrayType
 
 # from .panel import DetectorPanel
-from .simple_panel import DetectorPanel
+from .panel import DetectorPanel
 from .common import DetectorSettings
 from .etherdaq_udp import EtherDAQListener
 from instruments.srs.srsdg645 import SRSDG645
@@ -174,7 +174,7 @@ class DetectorController(ManagedInstrument):
     pause_live_reading = False
 
     # change to "bogus_read_frame" to simulate data instead
-    frame = AxisSpecification(ArrayType(), where=[], read="read_frame")
+    frame = AxisSpecification(ArrayType(), where=[], read="bogus_read_frame")
     frame_time = AxisSpecification(float, where=["frame_time"])
     timing_delay = AxisSpecification(float, where=["timing_delay"])
 

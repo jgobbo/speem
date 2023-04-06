@@ -30,17 +30,15 @@ class RepeatScan:
             ],
         )
 
-        # backup_frame_time = detector.driver.frame_time
-
-        yield detector.driver.set_frame_time(self.frame_s)
-        # yield setattr
+        original_frame_time = detector.driver.frame_time
+        yield [detector.frame_time.write(self.frame_s)]
 
         for step_i in range(self.n_repeats):
             with experiment.point():
                 yield [phony.stages[0].write(step_i)]
                 yield [detector.frame.read()]
 
-        yield detector.driver.set_frame_time(0.5)
+        yield [detector.frame_time.write(original_frame_time)]
 
     @property
     def metadata(self):
@@ -82,7 +80,7 @@ class ScanElectrode:
             dependent=[[detector.frame, "frames"]],
         )
 
-        # original_frame_time = detector.driver.frame_time
+        original_frame_time = detector.driver.frame_time
         yield [detector.frame_time.write(self.frame_time)]
 
         voltage = self.start
@@ -99,9 +97,7 @@ class ScanElectrode:
         yield [detector.frame.read()]
 
         yield power_supply.driver.apply_voltage(self.electrode, 0)
-        # using original_frame_time here is causing circular dependencies when saving
-        # very strange
-        yield detector.driver.set_frame_time(0.5)
+        yield [detector.frame_time.write(original_frame_time)]
 
 
 @dataclass
@@ -111,7 +107,12 @@ class CalibrateToF:
     ending_delay: float = 0
 
     def sequence(self, experiment: Experiment, detector: DetectorController):
-        pass
+        from scipy.stats import mode
+
+        for delay in np.linspace(self.starting_delay, self.ending_delay, 100):
+            timing_delay = yield [detector.timing_delay.write(delay)]
+            frame = yield [detector.frame.read()]
+            peak_time = mode(frame[:, 2]).mode[0]
 
 
 class SPEEMExperiment(Experiment):

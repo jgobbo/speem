@@ -14,7 +14,6 @@ import bitstruct
 import time
 from random import randint
 
-from aioprocessing import AioQueue
 from asyncio import Queue
 
 # __all__ = ["EtherDAQListener"]
