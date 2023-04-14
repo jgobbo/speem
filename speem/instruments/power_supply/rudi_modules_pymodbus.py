@@ -2,14 +2,13 @@ from dataclasses import dataclass
 from enum import IntEnum
 import math
 from loguru import logger
-from modbus_tk.defines import (
-    READ_HOLDING_REGISTERS,
-    WRITE_SINGLE_REGISTER,
-    WRITE_MULTIPLE_REGISTERS,
-    READ_WRITE_MULTIPLE_REGISTERS,
-)
-from modbus_tk.modbus_tcp import TcpMaster
-from modbus_tk.exceptions import ModbusError
+
+from pymodbus.client import ModbusTcpClient
+from pymodbus.register_read_message import ReadHoldingRegistersResponse
+from pymodbus.register_write_message import WriteMultipleRegistersResponse
+
+# TODO check that set mode works and figure out second response doesnt work
+# might want to go to async client
 
 
 __all__ = [
@@ -62,18 +61,13 @@ def version_convert(version: int) -> tuple[str, str]:
 def calibration_check(points: list[int]) -> bool:
     """
     The method checks the card calibrations. The card is not calibrated when
-    there is more than one point with an absolute value 65535.
+    appears more than one point with an absolute value 65535.
 
     :param points: List of digital points e.g. [dig_Point0, dig_Point_1]
     :return: 1-is calibrated, 0-is not calibrated
     """
     dig_ = [1 if abs(x[0]) == 65535 else 0 for x in points]
     return dig_.count(1) <= 1
-
-
-def truncate(number, digits) -> float:
-    stepper = pow(10.0, digits)
-    return math.trunc(stepper * number) / stepper
 
 
 class FloatRange:
@@ -146,29 +140,29 @@ DEFAULT_RANGES = {
 @dataclass
 class HVAddress:
     """
-    Map of addresses of HV card registers
+    Map of (address, length) of HV card registers
     that are queried using the ModbusTCP protocol.
     """
 
-    SETPOINT_BINARY = 0  # Read/Write
-    SETPOINT_mV = 2  # R/W
-    OPERATE = 4  # R/W
-    WORKING_MODE = 5  # R/W
-    STATUS = 6  # R/W
-    VOLTAGE = 7  # R
-    CARD_VERSION = 9  # R
-    N_CAL_POINTS = 10  # R
-    SECURITY_WORD = 11  # R
-    VOLTAGE_RANGE = 12  # R
-    SHORT_CIRCUIT_COUNTER = 14  # R/W
-    CAL_POINT_BINARY_START = 16  # R
-    CAL_POINT_mV_START = 18  # R
-    CAL_POINT_OFFSET = 4
+    SETPOINT_BINARY = (0, WORD)  # R/W
+    SETPOINT_mV = (2, WORD)  # R/W
+    OPERATE = (4, BYTE)  # R/W
+    WORKING_MODE = (5, BYTE)  # R/W
+    STATUS = (6, BYTE)  # R/W
+    VOLTAGE = (7, 2)  # R
+    CARD_VERSION = (9, BYTE)  # R
+    N_CAL_POINTS = (10, BYTE)  # R
+    SECURITY_WORD = (11, BYTE)  # R
+    VOLTAGE_RANGE = (12, WORD)  # R
+    SHORT_CIRCUIT_COUNTER = (14, WORD)  # R/W
+    CAL_POINT_BINARY_START = (16, WORD)  # R
+    CAL_POINT_mV_START = (18, WORD)  # R
+    CAL_POINT_OFFSET = 4  # subsequent calibration points are 4 registers away
 
 
 @dataclass
 class RudiHV:
-    master: TcpMaster
+    client: ModbusTcpClient
     module_address: int
     states_map = {
         0: "After Reset",
@@ -205,6 +199,21 @@ class RudiHV:
         else:
             self.range = FloatRange(0, self.high_range.max)
 
+    def _read_holding_registers(self, address: HVAddress) -> list[int]:
+        response: ReadHoldingRegistersResponse = self.client.read_holding_registers(
+            *address, slave=self.module_address
+        )
+        if response.isError():
+            raise Exception(response)
+        return response.registers
+
+    def _write_registers(self, address: HVAddress, value) -> None:
+        response: WriteMultipleRegistersResponse = self.client.write_registers(
+            address[0], value, slave=self.module_address
+        )
+        if response.isError():
+            raise Exception(response)
+
     def get_ranges(self):
         self.set_mode(HVMode.POSITIVE_HIGH)
         self.high_range = FloatRange(self.get_min(), self.get_max())
@@ -220,12 +229,7 @@ class RudiHV:
         if self.mode is HVMode.SHORT_OUTPUT:
             return 0
 
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.VOLTAGE,
-            WORD,
-        )
+        data = self._read_holding_registers(HVAddress.VOLTAGE)
         voltage = data_to_integer(data) / VOLTS_TO_MILLIVOLTS
         return (
             voltage
@@ -234,12 +238,7 @@ class RudiHV:
         )
 
     def get_setpoint(self) -> float:
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.SETPOINT_mV,
-            WORD,
-        )
+        data = self._read_holding_registers(HVAddress.SETPOINT_mV)
         voltage = data_to_integer(data) / VOLTS_TO_MILLIVOLTS
         return voltage
 
@@ -269,75 +268,30 @@ class RudiHV:
 
     def _set_setpoint(self, voltage: float) -> None:
         data = hex(int(voltage * VOLTS_TO_MILLIVOLTS))[2:].zfill(8)
-        try:
-            self.master.execute(
-                slave=self.module_address,
-                function_code=READ_WRITE_MULTIPLE_REGISTERS,
-                starting_address=HVAddress.SETPOINT_mV,
-                quantity_of_x=WORD,
-                output_value=[int(data[:4], 16), int(data[4:], 16)],
-                expected_length=WORD,
-                write_starting_address_FC23=HVAddress.SETPOINT_mV,
-            )
-        except ModbusError:
-            print(
-                f"module {self.module_address} failed to output {voltage} in mode {self.mode}."
-            )
+        output_value = [int(data[:4], 16), int(data[4:], 16)]
+        self._write_registers(HVAddress.SETPOINT_mV, output_value)
 
     def set_mode(self, mode: HVMode) -> None:
         if mode is not self.mode:
             self.mode = mode
-            self.master.execute(
-                self.module_address,
-                WRITE_SINGLE_REGISTER,
-                HVAddress.WORKING_MODE,
-                output_value=self.mode,
-            )
+            self._write_registers(HVAddress.WORKING_MODE, [mode.value])
 
     def get_mode(self) -> HVMode:
-        return HVMode(
-            self.master.execute(
-                self.module_address,
-                READ_HOLDING_REGISTERS,
-                HVAddress.WORKING_MODE,
-                WORD,
-            )[0]
-        )
+        return HVMode(self._read_holding_registers(HVAddress.WORKING_MODE)[0])
 
     def get_max(self) -> float:
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.VOLTAGE_RANGE,
-            WORD,
-        )
+        data = self._read_holding_registers(HVAddress.VOLTAGE_RANGE)
         return data_to_integer(data) / VOLTS_TO_MILLIVOLTS
 
     def get_min(self) -> float:
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.CAL_POINT_mV_START,
-            WORD,
-        )
+        data = self._read_holding_registers(HVAddress.CAL_POINT_mV_START)
         return data_to_integer(data) / VOLTS_TO_MILLIVOLTS
 
     def get_status(self):
-        return self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.STATUS,
-            BYTE,
-        )[0]
+        return self._read_holding_registers(HVAddress.STATUS)[0]
 
     def get_version(self):
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            HVAddress.CARD_VERSION,
-            WORD,
-        )
-        return version_convert(data[0])
+        return version_convert(self._read_holding_registers(HVAddress.CARD_VERSION)[0])
 
     def show_info(self):
         card_version = self.get_version()
@@ -348,8 +302,7 @@ class RudiHV:
         mode = self.get_mode()
         status = format(self.get_status(), "08b")
 
-        # print(f"IP: {self.rudi_ip_address}, DeviceID: {self.module_address}")
-        print(f"IP: {self.master._host}, DeviceID: {self.module_address}")
+        print(f"IP: {self.client.params.host}, DeviceID: {self.module_address}")
         print(
             f"Hardware version: {card_version[0]}, Firmware version: {card_version[1]}"
         )
@@ -369,20 +322,20 @@ class DACAddress:
     that are queried using the ModbusTCP protocol.
     """
 
-    SETPOINT_BINARY = 0  # Read/Write
-    SETPOINT_uV = 2  # R/W
-    STATUS = 4  # R/W
-    CARD_VERSION = 5  # R
-    N_CAL_POINTS = 6  # R
-    SECURITY_WORD = 7  # R
-    CAL_POINT_BINARY_START = 8  # R
-    CAL_POINT_uV_START = 10  # R
-    CAL_POINT_OFFSET = 4
+    SETPOINT_BINARY = (0, WORD)  # R/W
+    SETPOINT_uV = (2, WORD)  # R/W
+    STATUS = (4, BYTE)  # R/W
+    CARD_VERSION = (5, BYTE)  # R
+    N_CAL_POINTS = (6, BYTE)  # R
+    SECURITY_WORD = (7, BYTE)  # R
+    CAL_POINT_BINARY_START = (8, WORD)  # R
+    CAL_POINT_uV_START = (10, WORD)  # R
+    CAL_POINT_OFFSET = 4  # subsequent calibration points are 4 registers away
 
 
 @dataclass
 class RudiDAC:
-    master: TcpMaster
+    client: ModbusTcpClient
     module_address: int
     states_map = {
         0: "After Reset",
@@ -392,13 +345,23 @@ class RudiDAC:
     range = FloatRange(-12, 12)
     min_output = 0.0
 
-    def get_voltage(self) -> float:
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            DACAddress.SETPOINT_uV,
-            WORD,
+    def _read_holding_registers(self, address: DACAddress) -> list[int]:
+        response: ReadHoldingRegistersResponse = self.client.read_holding_registers(
+            *address, slave=self.module_address
         )
+        if response.isError():
+            raise Exception(response)
+        return response.registers
+
+    def _write_registers(self, address: DACAddress, data: list[int]) -> None:
+        response: WriteMultipleRegistersResponse = self.client.write_registers(
+            address[0], data, slave=self.module_address
+        )
+        if response.isError():
+            raise Exception(response)
+
+    def get_voltage(self) -> float:
+        data = self._read_holding_registers(DACAddress.SETPOINT_uV)
         voltage = data_to_integer(data)
         return voltage / VOLTS_TO_MICROVOLTS
 
@@ -412,40 +375,21 @@ class RudiDAC:
 
     def _set_setpoint(self, voltage: float) -> None:
         data = hex_tc(int(voltage * VOLTS_TO_MICROVOLTS))[2:].zfill(8)
-        self.master.execute(
-            slave=self.module_address,
-            function_code=WRITE_MULTIPLE_REGISTERS,
-            starting_address=DACAddress.SETPOINT_uV,
-            quantity_of_x=WORD,
-            output_value=[int(data[:4], 16), int(data[4:], 16)],
-            expected_length=WORD,
-            write_starting_address_FC23=DACAddress.SETPOINT_uV,
-        )
+        output_value = [int(data[:4], 16), int(data[4:], 16)]
+        self._write_registers(DACAddress.SETPOINT_uV, output_value)
 
     def get_status(self):
-        return self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            DACAddress.STATUS,
-            BYTE,
-        )[0]
+        return self._read_holding_registers(DACAddress.STATUS)[0]
 
     def get_version(self):
-        data = self.master.execute(
-            self.module_address,
-            READ_HOLDING_REGISTERS,
-            DACAddress.CARD_VERSION,
-            WORD,
-        )
-        return version_convert(data[0])
+        return version_convert(self._read_holding_registers(DACAddress.CARD_VERSION)[0])
 
     def show_info(self):
         card_version = self.get_version()
         voltage = self.get_voltage()
         status = format(self.get_status(), "03b")
 
-        # print(f"IP: {self.rudi_ip_address}, DeviceID: {self.module_address}")
-        print(f"IP: {self.master._host}, DeviceID: {self.module_address}")
+        print(f"IP: {self.client.params.host}, DeviceID: {self.module_address}")
         print(
             f"Hardware version: {card_version[0]}, Firmware version: {card_version[1]}"
         )

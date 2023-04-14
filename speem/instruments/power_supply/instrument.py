@@ -2,18 +2,19 @@ import os, socket
 from typing import Union
 from pathlib import Path
 from colorama import Fore, Style
-from enum import Enum
 from loguru import logger
 
 from autodidaqt import ManagedInstrument
 from autodidaqt.instrument.spec import (
-    AxisListSpecification,
     ChoicePropertySpecification,
 )
-from autodidaqt_common.schema import ObjectType
 
+# from modbus_tk.modbus_tcp import TcpMaster
+from pymodbus.client import ModbusTcpClient, AsyncModbusTcpClient
 from .common import *
-from .rudi_modules import *
+
+# from .rudi_modules import *
+from .rudi_modules_pymodbus import *
 from .panel import PowerSupplyPanel
 
 __all__ = [
@@ -22,24 +23,27 @@ __all__ = [
 
 ROOT = Path(__file__).parent
 
-# TODO test changes
-# TODO table correction seems to be broken
-
 
 class RudiEA2Driver:
     settings = PowerSupplySettings
+    rudi_tcp_client: ModbusTcpClient = None
     modules: dict[Terminal, Union[RudiHV, RudiDAC]] = {}
     voltage_offset: int = 0
-    ramp_rate: int = 50  # V/s
 
     def __init__(self) -> None:
+        # rudi_tcp_master = TcpMaster(RUDI_IP_ADDRESS, timeout_in_sec=0.5)
+        self.rudi_tcp_client = ModbusTcpClient(RUDI_IP_ADDRESS)
+        self.rudi_tcp_client.connect()
+
         not_shorted = []
         for terminal, address in self.settings.terminal_configuration.items():
             try:
                 if address > 31:
-                    self.modules[terminal] = RudiDAC(address)
+                    # self.modules[terminal] = RudiDAC(rudi_tcp_master, address)
+                    self.modules[terminal] = RudiDAC(self.rudi_tcp_client, address)
                 else:
-                    self.modules[terminal] = RudiHV(address)
+                    # self.modules[terminal] = RudiHV(rudi_tcp_master, address)
+                    self.modules[terminal] = RudiHV(self.rudi_tcp_client, address)
                     if not self.modules[terminal].shorted_on_startup:
                         not_shorted.append(terminal)
             except socket.timeout:
@@ -53,7 +57,7 @@ class RudiEA2Driver:
 
     def corrected_table(self, table: dict[Electrode, float]) -> dict[str, float]:
         """
-            Corrects the lens-table according to physical connections and to avoid deadzones in the modules
+        Corrects the lens-table according to physical connections and to avoid deadzones in the modules
         """
 
         positive_offset = 0
@@ -127,21 +131,8 @@ class RudiEA2Driver:
                 f"{Fore.RED}Terminal: {terminal.name} doesn't have a module. Check the configuration and connections.{Style.RESET_ALL}"
             )
 
-    # async def ramp(self, module: Union[RudiHV, RudiDAC], voltage: float):
-    #     curr_voltage = module.get_voltage()
-    #     while abs(curr_voltage - voltage) > self.ramp_rate:
-    #         curr_voltage = (
-    #             curr_voltage + self.ramp_rate
-    #             if voltage > curr_voltage
-    #             else curr_voltage - self.ramp_rate
-    #         )
-    #         module.set_setpoint(curr_voltage)
-    #         await asyncio.sleep(1)
-    #     module.set_setpoint(voltage)
-
-    # async def shutdown(self) -> None:
-    #     for module in self.modules.values():
-    #         await self.ramp(module, 0)
+    def shutdown(self) -> None:
+        self.rudi_tcp_client.close()
 
 
 class PowerSupplyController(ManagedInstrument):
@@ -182,3 +173,6 @@ class PowerSupplyController(ManagedInstrument):
                 self.import_table_file(self.TABLE_FOLDER / filename)
             )
 
+    async def shutdown(self):
+        self.driver.shutdown()
+        return await super().shutdown()

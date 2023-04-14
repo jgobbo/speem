@@ -1,7 +1,6 @@
 import time
 import numpy as np
 import pyqtgraph as pg
-from functools import partial
 from xarray import DataArray
 
 from autodidaqt.panels import BasicInstrumentPanel
@@ -15,6 +14,7 @@ from autodidaqt.ui import (
     check_box,
     label,
     numeric_input,
+    line_edit,
 )
 from autodidaqt.ui.pg_extras import (
     ArrayImageView,
@@ -106,9 +106,8 @@ class DetectorPanel(BasicInstrumentPanel):
                 dims=("x", "y"),
             )
         else:
-            self.data_x.data[:] = 0
-            self.data_y.data[:] = 0
-            self.data_t.data[:] = 0
+            for data in [self.data_x, self.data_y, self.data_t]:
+                data.data[:] = 0
 
         now = time.time()
         self.start_time = now
@@ -117,25 +116,18 @@ class DetectorPanel(BasicInstrumentPanel):
         self.n_elec = 0
         self.n_elec_list = []
 
-    def update_frame_time(self, new_time):
-        self.instrument.driver.frame_time = float(new_time)
-
     @debounce(0.01)
     def update_timing_delay(self, new_time):
-        try:
-            new_time = float(new_time)
-            self.instrument.driver.timing_delay = new_time
-            self.data_x.coords["t"] = self.t_coords
-            self.data_y.coords["t"] = self.t_coords
+        new_time = float(new_time)
+        self.instrument.driver.timing_delay = new_time
+        self.data_x.coords["t"] = self.t_coords
+        self.data_y.coords["t"] = self.t_coords
 
-            # hacky way to update axis labels; gotten from AxisItem source code
-            for image in (self.image_x, self.image_y):
-                t_axis: "CoordAxis" = image.plot_item.axes["left"]["item"]
-                t_axis.picture = None
-                t_axis.update()
-
-        except ValueError:
-            pass
+        # hacky way to update axis labels; gotten from AxisItem source code
+        for image in (self.image_x, self.image_y):
+            t_axis: "CoordAxis" = image.plot_item.axes["left"]["item"]
+            t_axis.picture = None
+            t_axis.update()
 
     def layout(self):
         self.reset()
@@ -158,6 +150,7 @@ class DetectorPanel(BasicInstrumentPanel):
                     group(
                         button("Clear", id="clear-integration"),
                         check_box("Save only latest", id="save-only-latest"),
+                        line_edit("test", id="test"),
                     ),
                     horizontal(
                         vertical(
@@ -187,14 +180,18 @@ class DetectorPanel(BasicInstrumentPanel):
                             ),
                             horizontal(
                                 "Timing Delay [ns]:",
-                                button("<<", id="delay_dd"),
-                                button("<", id="delay_d"),
                                 numeric_input(
                                     self.instrument.driver.timing_delay,
+                                    input_type=float,
+                                    validator_settings={
+                                        "bottom": 0,
+                                        "top": 1500,
+                                        "decimals": 3,
+                                    },
                                     id="timing_delay",
+                                    increment=1,
+                                    multiplier=10,
                                 ),
-                                button(">", id="delay_u"),
-                                button(">>", id="delay_uu"),
                             ),
                         ),
                         group(
@@ -223,16 +220,7 @@ class DetectorPanel(BasicInstrumentPanel):
         self.ui["frame-time"].subject.subscribe(
             lambda x: setattr(self.instrument.driver, "frame_time", float(x))
         )
-
-        def shift_timing_delay(shift, _button_val):
-            curr_delay = float(self.ui["timing_delay"].text())
-            self.ui["timing_delay"].setText(str(curr_delay + shift))
-
         self.ui["timing_delay"].subject.subscribe(self.update_timing_delay)
-        for button_name, shift in zip(
-            ["delay_dd", "delay_d", "delay_u", "delay_uu"], [-10, -1, 1, 10]
-        ):
-            self.ui[button_name].subject.subscribe(partial(shift_timing_delay, shift))
 
         multiplier = 1.5
         self.image_x.setFixedSize(
@@ -309,8 +297,23 @@ class DetectorPanel(BasicInstrumentPanel):
         ):
             image.setImage(data, keep_levels=True)
 
+        self.update_countrates(frame.shape[0])
+
+    def replot_1d_marginal(self, marginal_index):
+        plot: ArrayPlot
+        plot, data, sum_axis = {
+            0: (self.plot_x_marginal, self.data_t, 1),
+            1: (self.plot_y_marginal, self.data_t, 0),
+            2: (self.plot_t_marginal, self.data_x, 0),
+        }[marginal_index]
+
+        data = np.sum(data, axis=sum_axis)
+        plot.clear()
+        p = plot.plot(data)
+        p.setPen(pg.mkPen(width=1, color=(0, 0, 0)))
+
+    def update_countrates(self, n_in_frame: int) -> None:
         now = time.time()
-        n_in_frame = frame.shape[0]
         self.n_elec += n_in_frame
         self.n_elec_list.append((n_in_frame, now))
 
@@ -330,16 +333,3 @@ class DetectorPanel(BasicInstrumentPanel):
             self.ui["global-count-rate"].setText(f"From start: {avg_since_start:.3f}")
             self.ui["interval-count-rate"].setText(f"In interval: {avg_interval:.3f}")
             self.ui["total-counts"].setText(str(self.n_elec))
-
-    def replot_1d_marginal(self, marginal_index):
-        plot: ArrayPlot
-        plot, data, sum_axis = {
-            0: (self.plot_x_marginal, self.data_t, 1),
-            1: (self.plot_y_marginal, self.data_t, 0),
-            2: (self.plot_t_marginal, self.data_x, 0),
-        }[marginal_index]
-
-        data = np.sum(data, axis=sum_axis)
-        plot.clear()
-        p = plot.plot(data)
-        p.setPen(pg.mkPen(width=1, color=(0, 0, 0)))

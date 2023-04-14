@@ -127,9 +127,6 @@ class EtherDAQUDPDriver:
                 messages.append(self.listener.messages.get_nowait())
             except asyncio.QueueEmpty:
                 return messages
-        # while not self.listener.messages.empty():
-        #     messages.append(self.listener.messages.get())
-        # return messages
 
     async def read_frame(self):
         _ = self.read_messages()

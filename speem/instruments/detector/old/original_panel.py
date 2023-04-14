@@ -24,12 +24,12 @@ from autodidaqt.ui.pg_extras import (
     RescalableCursorRegion,
 )
 
-from .common import DetectorSettings
+from ..common import DetectorSettings
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .instrument import DetectorController
+    from ..instrument import DetectorController
 
 __all__ = ("DetectorPanel",)
 

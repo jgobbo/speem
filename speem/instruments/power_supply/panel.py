@@ -1,5 +1,5 @@
 import asyncio
-import functools
+from functools import partial
 from .common import *
 from autodidaqt.panels import BasicInstrumentPanel
 from autodidaqt.ui import (
@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .instrument import PowerSupplyController
+    from autodidaqt.widgets import NumericEdit
 
 __all__ = ("PowerSupplyPanel",)
 
@@ -27,6 +28,17 @@ def safe_float(string: str) -> float:
         return float(string)
     except ValueError:
         return 0.0
+
+
+"""
+List of changes to check
+1. Lens-table metadata automatically updates when table is selected in dropdown
+2. lens-table assign is now apply
+3. anode and mcp are now labels and can only be changed with buttons
+4. all terminal numerics automatically apply voltage when changed and have validation
+5. invalid terminals has id "None"
+6. TCP master was consolidated as a potential fix
+"""
 
 
 class PowerSupplyPanel(BasicInstrumentPanel):
@@ -61,12 +73,22 @@ class PowerSupplyPanel(BasicInstrumentPanel):
     D11 = {Corrector.D11: 1}
     D12 = {Corrector.D12: 1}
 
-    def assign_lens_table(self, ui_value):
+    def update_metadata(self, _table_name: str) -> None:
+        """
+        Combo boxes' subjects contain their current text as a string, but we actually want the index.
+        We also want the reactivity of subscribing to the subject, so we just ignore the value and take the index from the combo box.
+        """
+
+        self.ui["metadata"].setText(
+            self.instrument.lens_tables[self.ui["raw-table"].currentIndex()].metadata
+        )
+
+    def apply_lens_table(self, ui_value):
         if ui_value:
             lens_table = self.instrument.lens_tables[
                 self.ui["raw-table"].currentIndex()
             ]
-            self.ui["metadata"].setText(lens_table.metadata)
+            # self.ui["metadata"].setText(lens_table.metadata)
 
             scaling = float(self.ui["desired-energy"].text()) / float(
                 self.ui["designed-energy"].text()
@@ -81,37 +103,56 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 except KeyError:
                     print(f"Electrode:{key} doesn't exist.")
 
-    def apply_table(self, table: dict):
-        table = {Electrode[key]: safe_float(val) for key, val in table.items()}
-        self.instrument.driver.apply_table(LensTable(table=table, name="from panel"))
+    # def apply_table(self, table: dict):
+    #     table = {Electrode[key]: safe_float(val) for key, val in table.items()}
+    #     self.instrument.driver.apply_table(LensTable(table=table, name="from panel"))
 
-    def apply_detector(self, values: dict):
-        for detector, voltage in values.items():
+    # def apply_detector(self, values: dict):
+    #     for detector, voltage in values.items():
+    #         self.instrument.driver.apply_voltage(
+    #             Detector[detector], safe_float(voltage)
+    #         )
+
+    # def apply_detector(self, detector:Detector, voltage:str):
+    #     self.instrument.driver.apply_voltage(detector, safe_float(voltage))
+
+    # def apply_corrector(self, corrector: str, voltage: str):
+    #     voltage = safe_float(voltage)
+
+    #     if isinstance(corrector, Corrector):
+    #         configuration = {corrector: 1}
+    #     else:
+    #         configuration: dict[Corrector, int] = getattr(self, corrector)
+    #     for corrector, multiplier in configuration.items():
+    #         # print(f"{corrector}: {multiplier}")
+    #         self.instrument.driver.apply_voltage(
+    #             corrector, safe_float(voltage * multiplier)
+    #         )
+
+    def apply_element(self, element: str, voltage: str):
+        configuration: dict[Terminal, float] = getattr(self, element)
+        for terminal, multiplier in configuration.items():
             self.instrument.driver.apply_voltage(
-                Detector[detector], safe_float(voltage)
+                terminal, safe_float(voltage * multiplier)
             )
 
-    def apply_corrector(self, corrector: str, voltage: str):
-        voltage = safe_float(voltage)
-
-        if isinstance(corrector, Corrector):
-            configuration = {corrector: 1}
-        else:
-            configuration: dict[Corrector, int] = getattr(self, corrector)
-        for corrector, multiplier in configuration.items():
-            # print(f"{corrector}: {multiplier}")
-            self.instrument.driver.apply_voltage(
-                corrector, safe_float(voltage * multiplier)
-            )
-
-    def shutdown_lenses(self, button_val: bool) -> None:
+    def shutdown_electrodes(self, button_val: bool) -> None:
         if button_val:
-            table = {}
+            # table = {}
             for electrode in self.settings.terminal_configuration.keys():
                 if isinstance(electrode, Electrode):
                     self.ui[electrode.name].setText("0")
-                    table[electrode.name] = 0
-            self.apply_table(table)
+            #         table[electrode.name] = 0
+            # self.apply_table(table)
+
+    def increment_voltage(
+        self, button_val: bool, terminal: Terminal, increment: float
+    ) -> None:
+        if button_val:
+            ui_element: "NumericEdit" = self.ui[terminal.name]
+            output_voltage = safe_float(ui_element.text()) + increment
+            self.instrument.driver.apply_voltage(terminal, output_voltage)
+            ui_element.setText(str(output_voltage))
 
     async def _apply_anode(self, voltage: float) -> None:
         self.instrument.driver.apply_voltage(Detector.ANODE, voltage)
@@ -157,22 +198,44 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 self.ui[detector.name].setText(str(0))
 
     def layout(self):
+        def terminal_numeric(terminal: Terminal):
+            if terminal not in self.settings.terminal_configuration:
+                input = numeric_input(
+                    "n/a",
+                    id=None,
+                )
+                input.setStyleSheet("background-color:rgb(255,90,90);")
+            else:
+                validation_settings = {
+                    "bottom": self.instrument.driver.modules[terminal].range.min,
+                    "top": self.instrument.driver.modules[terminal].range.max,
+                    "decimals": 3,
+                }
+                input = numeric_input(
+                    str(self.instrument.driver.modules[terminal].get_voltage()),
+                    id=terminal.name,
+                    validation_settings=validation_settings,
+                )
+                # quick application of voltage whenever text is changed
+                input.subject.subscribe(
+                    lambda voltage: self.instrument.driver.apply_voltage(
+                        terminal, safe_float(voltage)
+                    )
+                )
+            return input
+
+        def terminal_label(terminal: Terminal):
+            if terminal not in self.settings.terminal_configuration:
+                ui_label = label("n/a", id=terminal.name)
+                ui_label.setStyleSheet("background-color:rgb(255,90,90);")
+            else:
+                ui_label = label(
+                    str(self.instrument.driver.modules[terminal].get_voltage()),
+                    id=terminal.name,
+                )
+            return ui_label
+
         def terminal_layout(name: str, terminals: list[Terminal]):
-            def terminal_numeric(terminal: Terminal):
-                if terminal not in self.settings.terminal_configuration:
-                    input = numeric_input(
-                        "n/a",
-                        id=terminal.name,
-                    )
-                    input.setStyleSheet("background-color:rgb(255,90,90);")
-                else:
-                    input = numeric_input(
-                        str(self.instrument.driver.modules[terminal].get_voltage()),
-                        id=terminal.name,
-                    )
-
-                return input
-
             return group(
                 name,
                 vertical(
@@ -183,6 +246,12 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 ),
             )
 
+        def element_numeric(element: str):
+            # TODO: add validation
+            input = numeric_input("0", id=element)
+            input.subject.subscribe(partial(self.apply_element, element))
+            return input
+
         def element_layout(
             name: str, elements: list[str]
         ):  # elements are collections of terminals
@@ -190,7 +259,7 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 name,
                 vertical(
                     *[
-                        horizontal(label(element), numeric_input("0", id=element))
+                        horizontal(label(element), element_numeric(element))
                         for element in elements
                     ]
                 ),
@@ -215,7 +284,8 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                             group(
                                 "metadata",
                                 label(
-                                    "assign a lens table to view it's metadata",
+                                    # "assign a lens table to view it's metadata",
+                                    "select a lens table to view it's metadata",
                                     id="metadata",
                                 ),
                             ),
@@ -230,7 +300,8 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                                 numeric_input("1", id="desired-energy"),
                             ),
                         ),
-                        button("Assign Lens Table", id="assign-table"),
+                        # button("Assign Lens Table", id="assign-table"),
+                        button("Apply Lens Table", id="apply-table"),
                     ),
                 ),
                 horizontal(
@@ -272,22 +343,44 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                             [Corrector.D10, Corrector.D11, Corrector.D12],
                         ),
                     ),
-                    terminal_layout(
-                        "detector",
-                        [
-                            Detector.GRID,
-                            Detector.MCP,
-                            Detector.ANODE,
-                        ],
+                    group(
+                        "Detector",
+                        vertical(
+                            horizontal(
+                                label("Anode"),
+                                terminal_label(Detector.ANODE),
+                                button("<", id="anode-minus"),
+                                button(">", id="anode-plus"),
+                            ),
+                            horizontal(
+                                label("MCP"),
+                                terminal_label(Detector.MCP),
+                                button("<", id="mcp-minus"),
+                                button(">", id="mcp-plus"),
+                            ),
+                            horizontal(
+                                label("Grid"),
+                                terminal_numeric(Detector.GRID),
+                            ),
+                        ),
                     ),
+                    # terminal_layout(
+                    #     "detector",
+                    #     [
+                    #         Detector.GRID,
+                    #         Detector.MCP,
+                    #         Detector.ANODE,
+                    #     ],
+                    # ),
                 ),
                 horizontal(
+                    # vertical(
+                    #     button("Apply Table", id="apply-table"),
+                    #     button("Shutdown Lenses", id="shutdown-lenses"),
+                    # ),
+                    button("Shutdown Electrodes", id="shutdown-electrodes"),
                     vertical(
-                        button("Apply Table", id="apply-table"),
-                        button("Shutdown Lenses", id="shutdown-lenses"),
-                    ),
-                    vertical(
-                        button("Apply Detector", id="apply-detector"),
+                        # button("Apply Detector", id="apply-detector"),
                         button("Ramp Detector", id="ramp-detector"),
                         button("Shutdown Detector", id="shutdown-detector"),
                     ),
@@ -295,8 +388,10 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 widget=self,
             )
 
-        self.ui["assign-table"].subject.subscribe(self.assign_lens_table)
-        self.ui["shutdown-lenses"].subject.subscribe(self.shutdown_lenses)
+        self.ui["raw-table"].subject.subscribe(self.update_metadata)
+        # self.ui["assign-table"].subject.subscribe(self.apply_lens_table)
+        self.ui["apply-table"].subject.subscribe(self.apply_lens_table)
+        self.ui["shutdown-electrodes"].subject.subscribe(self.shutdown_electrodes)
         self.ui["ramp-detector"].subject.subscribe(
             lambda button_val: asyncio.create_task(self.ramp_detector(button_val))
         )
@@ -304,20 +399,33 @@ class PowerSupplyPanel(BasicInstrumentPanel):
             lambda button_val: asyncio.create_task(self.shutdown_detector(button_val))
         )
 
-        submit(
-            "apply-table", [electrode.name for electrode in Electrode], self.ui
-        ).subscribe(self.apply_table)
+        self.ui["anode-plus"].subject.subscribe(
+            partial(self.increment_voltage, terminal=Detector.ANODE, increment=10)
+        )
+        self.ui["anode-minus"].subject.subscribe(
+            partial(self.increment_voltage, terminal=Detector.ANODE, increment=-10)
+        )
+        self.ui["mcp-plus"].subject.subscribe(
+            partial(self.increment_voltage, terminal=Detector.MCP, increment=10)
+        )
+        self.ui["mcp-minus"].subject.subscribe(
+            partial(self.increment_voltage, terminal=Detector.MCP, increment=-10)
+        )
 
-        for element in ["DFX", "DFY", "STA", "STB"]:
-            self.ui[element].subject.subscribe(
-                functools.partial(self.apply_corrector, element)
-            )
+        # submit(
+        #     "apply-table", [electrode.name for electrode in Electrode], self.ui
+        # ).subscribe(self.apply_table)
+
+        # for element in ["DFX", "DFY", "STA", "STB"]:
+        #     self.ui[element].subject.subscribe(
+        #         partial(self.apply_corrector, element)
+        #     )
 
         # for corrector in Corrector:
         #     self.ui[corrector.name].subject.subscribe(
-        #         functools.partial(self.apply_corrector, corrector)
+        #         partial(self.apply_corrector, corrector)
         #     )
 
-        submit(
-            "apply-detector", [detector.name for detector in Detector], self.ui
-        ).subscribe(self.apply_detector)
+        # submit(
+        #     "apply-detector", [detector.name for detector in Detector], self.ui
+        # ).subscribe(self.apply_detector)
