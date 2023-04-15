@@ -1,5 +1,6 @@
 import time
 import numpy as np
+from PyQt5 import QtWidgets
 import pyqtgraph as pg
 from xarray import DataArray
 
@@ -223,18 +224,13 @@ class DetectorPanel(BasicInstrumentPanel):
         self.ui["timing_delay"].subject.subscribe(self.update_timing_delay)
 
         multiplier = 1.5
-        self.image_x.setFixedSize(
-            self.settings.data_size * multiplier, self.settings.data_size * multiplier
-        )
-        self.image_y.setFixedSize(
-            self.settings.data_size * multiplier, self.settings.data_size * multiplier
-        )
-        self.image_t.setFixedSize(
-            self.settings.data_size * multiplier, self.settings.data_size * multiplier
-        )
+        for image in (self.image_x, self.image_y, self.image_t):
+            image.setFixedSize(
+                *[round(self.settings.data_size * multiplier)] * 2,
+            )
 
         circle_diameter = 500
-        p_ellipse = pg.QtGui.QGraphicsEllipseItem(
+        p_ellipse = QtWidgets.QGraphicsEllipseItem(
             (self.settings.data_size - circle_diameter) // 2,
             (self.settings.data_size - circle_diameter) // 2,
             circle_diameter,
