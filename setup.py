@@ -14,17 +14,8 @@ DESCRIPTION = "speem daq package"
 LONG_DESCRIPTION = (ROOT / "README.md").read_text()
 LONG_DESC_TYPE = "text/markdown"
 
-INSTALL_REQUIRES = [
-    "numba",
-    "astropy",
-    "scapy",
-    "bitstruct",
-    "aioprocessing",
-    "ThorlabsPM100",
-    "autodidaqt",
-    "autodidaqt-common",
-    "modbus_tk",
-]
+with open(ROOT / "requirements.txt") as f:
+    INSTALL_REQUIRES = f.read().splitlines()
 
 setup(
     name=PACKAGE_NAME,
