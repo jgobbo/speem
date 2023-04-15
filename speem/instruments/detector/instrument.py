@@ -3,15 +3,12 @@ import numpy as np
 import itertools
 from math import ceil
 from pathlib import Path
-
-# from scipy.stats import mode
 import json
 
 from autodidaqt import ManagedInstrument
 from autodidaqt.instrument import AxisSpecification
 from autodidaqt_common.schema import ArrayType
 
-# from .panel import DetectorPanel
 from .panel import DetectorPanel
 from .common import DetectorSettings
 from .etherdaq_udp import EtherDAQListener
@@ -75,8 +72,8 @@ class EtherDAQUDPDriver:
         self.timing_offset = timing_calibration["offset"]
         self.timing_slope = timing_calibration["slope"]
         self.timing_delay = (
-            float(self.delay_generator.channel["C"].delay[1]) * 1e9
-        )  # ns
+            float(self.delay_generator.channel["C"].delay[1].magnitude) * 1e9
+        )
 
     def __setattr__(self, name: str, value) -> None:
         # I need to have a custom setter for timing_delay but a quick getter.
