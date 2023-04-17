@@ -139,7 +139,6 @@ if __name__ == "__main__":
 
     with Profile() as pr:
         app.start()
-
     stats = pstats.Stats(pr)
     stats.sort_stats(pstats.SortKey.TIME)
     stats.dump_stats(filename="random.prof")
@@ -150,7 +149,6 @@ if __name__ == "__main__":
     #     app.start()
     # except:
     #     import pdb, traceback, sys
-
     #     extype, value, tb = sys.exc_info()
     #     traceback.print_exc()
     #     pdb.post_mortem(tb)

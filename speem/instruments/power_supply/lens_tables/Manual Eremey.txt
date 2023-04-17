@@ -1,5 +1,5 @@
 elecE:= 1.5eV sampleDist:= 3.0mm intAng:=36deg spotSize:=60.0um aper0D:= 2.0mm 
-baseline :  8.52
+BASELINE :  8.52
 V00  :  -6.524
 V01  :  -3.524
 V02  : 31.476
