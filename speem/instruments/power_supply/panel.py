@@ -88,7 +88,6 @@ class PowerSupplyPanel(BasicInstrumentPanel):
             lens_table = self.instrument.lens_tables[
                 self.ui["raw-table"].currentIndex()
             ]
-            # self.ui["metadata"].setText(lens_table.metadata)
 
             scaling = float(self.ui["desired-energy"].text()) / float(
                 self.ui["designed-energy"].text()
@@ -103,32 +102,6 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 except KeyError:
                     print(f"Electrode:{key} doesn't exist.")
 
-    # def apply_table(self, table: dict):
-    #     table = {Electrode[key]: safe_float(val) for key, val in table.items()}
-    #     self.instrument.driver.apply_table(LensTable(table=table, name="from panel"))
-
-    # def apply_detector(self, values: dict):
-    #     for detector, voltage in values.items():
-    #         self.instrument.driver.apply_voltage(
-    #             Detector[detector], safe_float(voltage)
-    #         )
-
-    # def apply_detector(self, detector:Detector, voltage:str):
-    #     self.instrument.driver.apply_voltage(detector, safe_float(voltage))
-
-    # def apply_corrector(self, corrector: str, voltage: str):
-    #     voltage = safe_float(voltage)
-
-    #     if isinstance(corrector, Corrector):
-    #         configuration = {corrector: 1}
-    #     else:
-    #         configuration: dict[Corrector, int] = getattr(self, corrector)
-    #     for corrector, multiplier in configuration.items():
-    #         # print(f"{corrector}: {multiplier}")
-    #         self.instrument.driver.apply_voltage(
-    #             corrector, safe_float(voltage * multiplier)
-    #         )
-
     def apply_element(self, element: str, voltage: str):
         configuration: dict[Terminal, float] = getattr(self, element)
         for terminal, multiplier in configuration.items():
@@ -138,12 +111,9 @@ class PowerSupplyPanel(BasicInstrumentPanel):
 
     def shutdown_electrodes(self, button_val: bool) -> None:
         if button_val:
-            # table = {}
             for electrode in self.settings.terminal_configuration.keys():
                 if isinstance(electrode, Electrode):
                     self.ui[electrode.name].setText("0")
-            #         table[electrode.name] = 0
-            # self.apply_table(table)
 
     def increment_voltage(
         self, button_val: bool, terminal: Terminal, increment: float

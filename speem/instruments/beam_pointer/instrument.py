@@ -136,7 +136,7 @@ class BeamPointerPanel(BasicInstrumentPanel):
         return int(self.ui["n-ys"].text())
 
     def start_scan(self, _):
-        self.detector.driver.set_frame_time(self.frame_time)
+        self.detector.frame_time.write(self.frame_time)
         self.scanning = True
 
         self.arr = np.zeros((self.n_xs, self.n_ys))
@@ -151,7 +151,8 @@ class BeamPointerPanel(BasicInstrumentPanel):
             self.arr[self.i_x, self.i_y] = len(frame["value"])
             # TODO - set meaningful tick labels
             self.image.setImage(
-                self.arr, keep_levels=False,
+                self.arr,
+                keep_levels=False,
             )
 
             self.i_y += 1

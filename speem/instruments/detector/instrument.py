@@ -13,7 +13,7 @@ from .panel import DetectorPanel
 from .common import DetectorSettings
 from .etherdaq_udp import EtherDAQListener
 from instruments.srs.srsdg645 import SRSDG645
-from quantities import ns
+import instruments.units as u
 
 __all__ = ("DetectorController", "EtherDAQUDPDriver")
 
@@ -58,7 +58,7 @@ class EtherDAQUDPDriver:
         )
         self.delay_generator.channel["D"].delay = (
             self.delay_generator.channel["C"],
-            10 * ns,
+            10 * u.ns,
         )
 
         self.delay_generator.output["CD"].level_amplitude = 1
@@ -81,7 +81,7 @@ class EtherDAQUDPDriver:
         if name == "timing_delay":
             self.delay_generator.channel["C"].delay = (
                 self.delay_generator.channel["T0"],
-                value * ns,
+                value * u.ns,
             )
             self.t_bins = np.linspace(
                 self.bin_to_time(self.settings.bins_per_channel),
@@ -125,7 +125,7 @@ class EtherDAQUDPDriver:
             except asyncio.QueueEmpty:
                 return messages
 
-    async def read_frame(self):
+    async def read_raw_frame(self):
         _ = self.read_messages()
         await asyncio.sleep(self.frame_time)
         contents = self.read_messages()
@@ -135,10 +135,28 @@ class EtherDAQUDPDriver:
 
         try:
             as_array = np.stack(all_events, axis=0)
-            converted_array = self.coordinate_convert(as_array)
-            return converted_array
+            return as_array
         except ValueError:
             return np.ndarray(shape=(0, 3), dtype=int)
+
+    async def read_frame(self):
+        raw_frame = await self.read_raw_frame()
+        return self.coordinate_convert(raw_frame)
+
+    # async def read_frame(self):
+    #     _ = self.read_messages()
+    #     await asyncio.sleep(self.frame_time)
+    #     contents = self.read_messages()
+    #     all_events = list(
+    #         itertools.chain(*[messages for _time, _id, messages, _n_failed in contents])
+    #     )
+
+    #     try:
+    #         as_array = np.stack(all_events, axis=0)
+    #         converted_array = self.coordinate_convert(as_array)
+    #         return converted_array
+    #     except ValueError:
+    #         return np.ndarray(shape=(0, 3), dtype=int)
 
     async def bogus_read_frame(self):
         await asyncio.sleep(self.frame_time)
@@ -168,7 +186,8 @@ class DetectorController(ManagedInstrument):
     pause_live_reading = False
 
     # change to "bogus_read_frame" to simulate data instead
-    frame = AxisSpecification(ArrayType(), where=[], read="bogus_read_frame")
+    frame = AxisSpecification(ArrayType(), where=[], read="read_frame")
+    raw_frame = AxisSpecification(ArrayType(), where=[], read="read_raw_frame")
     frame_time = AxisSpecification(float, where=["frame_time"])
     timing_delay = AxisSpecification(float, where=["timing_delay"])
 

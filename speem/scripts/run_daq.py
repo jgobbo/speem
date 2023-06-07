@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import numpy as np
+import json
 
 from autodidaqt import AutodiDAQt, Experiment
 from autodidaqt.mock import MockMotionController
@@ -109,10 +110,19 @@ class CalibrateToF:
     def sequence(self, experiment: Experiment, detector: DetectorController):
         from scipy.stats import mode
 
+        timing_delays = []
+        peak_pixels = []
         for delay in np.linspace(self.starting_delay, self.ending_delay, 100):
-            timing_delay = yield [detector.timing_delay.write(delay)]
-            frame = yield [detector.frame.read()]
-            peak_time = mode(frame[:, 2]).mode[0]
+            yield [detector.timing_delay.write(delay)]
+            frame = yield [detector.raw_frame.read()]
+
+            timing_delays.append(delay)
+            peak_pixels.append(mode(frame[:, 2]).mode[0])
+
+        slope, intercept = np.polyfit(timing_delays, peak_pixels, 1)
+        data = {"slope": slope, "offset": intercept}
+        with open(f"{self.filename}.json", "w") as f:
+            json.dump(data, f, indent=1)
 
 
 class SPEEMExperiment(Experiment):
@@ -127,7 +137,7 @@ app = AutodiDAQt(
     managed_instruments={
         "detector": DetectorController,
         "power_supply": PowerSupplyController,
-        # "beam_pointer": BeamPointerController,
+        "beam_pointer": BeamPointerController,
         # "power_meter": PowermeterController,
         "phony": MockMotionController,
     },
