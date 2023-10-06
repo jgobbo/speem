@@ -4,6 +4,7 @@ import json
 
 from autodidaqt import AutodiDAQt, Experiment
 from autodidaqt.mock import MockMotionController
+
 from speem.instruments import *
 from speem.instruments.power_supply.common import Electrode
 

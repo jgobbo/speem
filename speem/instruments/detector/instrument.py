@@ -37,11 +37,20 @@ class EtherDAQCommunicationError(Exception):
 
 
 class EtherDAQUDPDriver:
+    __slots__ = (
+        "frame_time",
+        "timing_delay",
+        "listener",
+        "settings",
+        "timing_offset",
+        "timing_slope",
+        "t_bins",
+    )
+
     frame_time: float = 0.5
     timing_delay: float
     listener: EtherDAQListener
     settings = DetectorSettings
-    running: bool = None
     timing_offset: float = None  # ns
     timing_slope: float = None  # ns/pixel
     t_bins: np.ndarray = None  # need this here to give the panel convient access
@@ -125,9 +134,12 @@ class EtherDAQUDPDriver:
             except asyncio.QueueEmpty:
                 return messages
 
+    async def empty_message_queue(self) -> None:
+        self.listener.messages = asyncio.Queue()
+
     async def read_raw_frame(self):
-        _ = self.read_messages()
-        await asyncio.sleep(self.frame_time)
+        # _ = self.read_messages()
+        # await asyncio.sleep(self.frame_time)
         contents = self.read_messages()
         all_events = list(
             itertools.chain(*[messages for _time, _id, messages, _n_failed in contents])
@@ -143,23 +155,8 @@ class EtherDAQUDPDriver:
         raw_frame = await self.read_raw_frame()
         return self.coordinate_convert(raw_frame)
 
-    # async def read_frame(self):
-    #     _ = self.read_messages()
-    #     await asyncio.sleep(self.frame_time)
-    #     contents = self.read_messages()
-    #     all_events = list(
-    #         itertools.chain(*[messages for _time, _id, messages, _n_failed in contents])
-    #     )
-
-    #     try:
-    #         as_array = np.stack(all_events, axis=0)
-    #         converted_array = self.coordinate_convert(as_array)
-    #         return converted_array
-    #     except ValueError:
-    #         return np.ndarray(shape=(0, 3), dtype=int)
-
     async def bogus_read_frame(self):
-        await asyncio.sleep(self.frame_time)
+        # await asyncio.sleep(self.frame_time)
         n_points = ceil(np.random.randint(5000, 10000) * self.frame_time)
         xs = np.random.randint(
             low=0, high=self.settings.bins_per_channel * 3 / 4, size=n_points
@@ -202,7 +199,18 @@ class DetectorController(ManagedInstrument):
         return await super().shutdown()
 
     async def run_step(self):
+        empty_queue = False
         if self.pause_live_reading:
-            await asyncio.sleep(0.25)
+            await asyncio.sleep(self.driver.frame_time)
+            empty_queue = True
         else:
-            await self.frame.read()
+            if empty_queue:
+                await asyncio.gather(
+                    self.driver.empty_message_queue(),
+                    asyncio.sleep(self.driver.frame_time),
+                )
+                empty_queue = False
+            else:
+                await asyncio.gather(
+                    self.frame.read(), asyncio.sleep(self.driver.frame_time)
+                )

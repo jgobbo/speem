@@ -6,7 +6,7 @@ app = AutodiDAQt(
     # actors={"experiment": Experiment,},
     managed_instruments={
         "detector": DetectorController,
-        "power supply": PowerSupplyController,
+        # "power supply": PowerSupplyController,
         # "beam_pointer": BeamPointerController,
     },
 )
