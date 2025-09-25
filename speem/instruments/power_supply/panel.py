@@ -47,6 +47,7 @@ class PowerSupplyPanel(BasicInstrumentPanel):
     DEFAULT_OPEN = True
     settings = PowerSupplySettings
     instrument: "PowerSupplyController"
+    ramping: bool = False
 
     DFX = {
         Corrector.D00: 1,
@@ -130,7 +131,11 @@ class PowerSupplyPanel(BasicInstrumentPanel):
         await asyncio.sleep(1)
 
     async def ramp_detector(self, button_val: bool) -> None:
+        if self.ramping:
+            return
+
         if button_val:
+            self.ramping = True
             starting_voltage = self.instrument.driver.modules[
                 Detector.ANODE
             ].get_voltage()
@@ -148,6 +153,7 @@ class PowerSupplyPanel(BasicInstrumentPanel):
 
             self.instrument.driver.apply_voltage(Detector.MCP, 300)
             self.ui[Detector.MCP.name].setText(str(300))
+            self.ramping = False
 
     async def shutdown_detector(self, button_val: bool) -> None:
         if button_val:
@@ -167,7 +173,7 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 self.instrument.driver.apply_voltage(detector, 0)
                 self.ui[detector.name].setText(str(0))
 
-    def layout(self):
+    def set_layout(self):
         def terminal_numeric(terminal: Terminal):
             if terminal not in self.settings.terminal_configuration:
                 input = numeric_input(
@@ -176,15 +182,21 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                 )
                 input.setStyleSheet("background-color:rgb(255,90,90);")
             else:
-                validation_settings = {
+                validator_settings = {
                     "bottom": self.instrument.driver.modules[terminal].range.min,
                     "top": self.instrument.driver.modules[terminal].range.max,
-                    "decimals": 3,
+                    "decimals": 6,
                 }
+                current_voltage = self.instrument.driver.modules[terminal].get_voltage()
+                current_voltage = (
+                    -current_voltage
+                    if terminal in INVERTED_ELECTRODES
+                    else current_voltage
+                )
                 input = numeric_input(
-                    str(self.instrument.driver.modules[terminal].get_voltage()),
+                    current_voltage,
                     id=terminal.name,
-                    validation_settings=validation_settings,
+                    validator_settings=validator_settings,
                 )
                 # quick application of voltage whenever text is changed
                 input.subject.subscribe(
@@ -254,7 +266,6 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                             group(
                                 "metadata",
                                 label(
-                                    # "assign a lens table to view it's metadata",
                                     "select a lens table to view it's metadata",
                                     id="metadata",
                                 ),
@@ -270,21 +281,30 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                                 numeric_input("1", id="desired-energy"),
                             ),
                         ),
-                        # button("Assign Lens Table", id="assign-table"),
                         button("Apply Lens Table", id="apply-table"),
                     ),
                 ),
                 horizontal(
                     group(
                         "Imaging Lenses",
-                        terminal_layout("baseline", [Electrode.BASELINE]),
+                        terminal_layout("baseline", [Electrode.VBL]),
                         terminal_layout(
                             "lens 0",
-                            [Electrode.V00, Electrode.V01, Electrode.V02],
+                            [
+                                Electrode.V00,
+                                Electrode.V01,
+                                Electrode.V02,
+                                Electrode.V03,
+                            ],
                         ),
                         terminal_layout(
                             "lens 1",
-                            [Electrode.V11, Electrode.V12, Electrode.V13],
+                            [
+                                Electrode.V10,
+                                Electrode.V11,
+                                Electrode.V12,
+                                Electrode.V13,
+                            ],
                         ),
                         terminal_layout(
                             "lens 2",
@@ -295,62 +315,49 @@ class PowerSupplyPanel(BasicInstrumentPanel):
                             [Electrode.V31, Electrode.V32, Electrode.V33],
                         ),
                     ),
-                    group(
-                        "Correction Lenses",
-                        element_layout("deflector", ["DFX", "DFY"]),
-                        element_layout(
-                            "stigmator",
-                            ["STA", "STB"],
+                    vertical(
+                        group(
+                            "Correction Lenses",
+                            element_layout("deflector", ["DFX", "DFY"]),
+                            element_layout(
+                                "stigmator",
+                                ["STA", "STB"],
+                            ),
+                            terminal_layout(
+                                "deflector 0",
+                                [Corrector.D00, Corrector.D01, Corrector.D02],
+                            ),
+                            terminal_layout(
+                                "deflector 1",
+                                [Corrector.D10, Corrector.D11, Corrector.D12],
+                            ),
                         ),
-                        # element_layout("deflector 0", ["D0X", "D0Y"],),
-                        # element_layout("deflector 1", ["D1X", "D1Y"],),
-                        terminal_layout(
-                            "deflector 0",
-                            [Corrector.D00, Corrector.D01, Corrector.D02],
-                        ),
-                        terminal_layout(
-                            "deflector 1",
-                            [Corrector.D10, Corrector.D11, Corrector.D12],
+                        group(
+                            "Detector",
+                            vertical(
+                                horizontal(
+                                    label("Anode"),
+                                    terminal_label(Detector.ANODE),
+                                    button("<", id="anode-minus"),
+                                    button(">", id="anode-plus"),
+                                ),
+                                horizontal(
+                                    label("MCP"),
+                                    terminal_label(Detector.MCP),
+                                    button("<", id="mcp-minus"),
+                                    button(">", id="mcp-plus"),
+                                ),
+                                horizontal(
+                                    label("Grid"),
+                                    terminal_numeric(Detector.GRID),
+                                ),
+                            ),
                         ),
                     ),
-                    group(
-                        "Detector",
-                        vertical(
-                            horizontal(
-                                label("Anode"),
-                                terminal_label(Detector.ANODE),
-                                button("<", id="anode-minus"),
-                                button(">", id="anode-plus"),
-                            ),
-                            horizontal(
-                                label("MCP"),
-                                terminal_label(Detector.MCP),
-                                button("<", id="mcp-minus"),
-                                button(">", id="mcp-plus"),
-                            ),
-                            horizontal(
-                                label("Grid"),
-                                terminal_numeric(Detector.GRID),
-                            ),
-                        ),
-                    ),
-                    # terminal_layout(
-                    #     "detector",
-                    #     [
-                    #         Detector.GRID,
-                    #         Detector.MCP,
-                    #         Detector.ANODE,
-                    #     ],
-                    # ),
                 ),
                 horizontal(
-                    # vertical(
-                    #     button("Apply Table", id="apply-table"),
-                    #     button("Shutdown Lenses", id="shutdown-lenses"),
-                    # ),
-                    button("Shutdown Electrodes", id="shutdown-electrodes"),
+                    button("Short Electrodes", id="shutdown-electrodes"),
                     vertical(
-                        # button("Apply Detector", id="apply-detector"),
                         button("Ramp Detector", id="ramp-detector"),
                         button("Shutdown Detector", id="shutdown-detector"),
                     ),
@@ -359,7 +366,6 @@ class PowerSupplyPanel(BasicInstrumentPanel):
             )
 
         self.ui["raw-table"].subject.subscribe(self.update_metadata)
-        # self.ui["assign-table"].subject.subscribe(self.apply_lens_table)
         self.ui["apply-table"].subject.subscribe(self.apply_lens_table)
         self.ui["shutdown-electrodes"].subject.subscribe(self.shutdown_electrodes)
         self.ui["ramp-detector"].subject.subscribe(
@@ -381,21 +387,3 @@ class PowerSupplyPanel(BasicInstrumentPanel):
         self.ui["mcp-minus"].subject.subscribe(
             partial(self.increment_voltage, terminal=Detector.MCP, increment=-10)
         )
-
-        # submit(
-        #     "apply-table", [electrode.name for electrode in Electrode], self.ui
-        # ).subscribe(self.apply_table)
-
-        # for element in ["DFX", "DFY", "STA", "STB"]:
-        #     self.ui[element].subject.subscribe(
-        #         partial(self.apply_corrector, element)
-        #     )
-
-        # for corrector in Corrector:
-        #     self.ui[corrector.name].subject.subscribe(
-        #         partial(self.apply_corrector, corrector)
-        #     )
-
-        # submit(
-        #     "apply-detector", [detector.name for detector in Detector], self.ui
-        # ).subscribe(self.apply_detector)

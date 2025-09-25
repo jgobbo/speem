@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from .lib.MDT_COMMAND_LIB import *
 import numpy as np
+import asyncio
 
 from autodidaqt import ManagedInstrument
 from autodidaqt.instrument import AxisSpecification
@@ -135,8 +136,8 @@ class BeamPointerPanel(BasicInstrumentPanel):
     def n_ys(self):
         return int(self.ui["n-ys"].text())
 
-    def start_scan(self, _):
-        self.detector.frame_time.write(self.frame_time)
+    async def start_scan(self, _):
+        await self.detector.frame_time.write(self.frame_time)
         self.scanning = True
 
         self.arr = np.zeros((self.n_xs, self.n_ys))
@@ -210,7 +211,9 @@ class BeamPointerPanel(BasicInstrumentPanel):
         for axis_view in self.axis_views:
             axis_view.attach(self.ui)
 
-        self.ui["start-scan"].subscribe(self.start_scan)
+        self.ui["start-scan"].subscribe(
+            lambda value: asyncio.create_task(self.start_scan(value))
+        )
         self.ui["abort"].subscribe(self.abort_scan)
 
         self.image.setImage(self.arr, keep_levels=False)

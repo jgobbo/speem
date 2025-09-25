@@ -1,6 +1,5 @@
 import asyncio
 import numpy as np
-import itertools
 from math import ceil
 from pathlib import Path
 import json
@@ -37,15 +36,15 @@ class EtherDAQCommunicationError(Exception):
 
 
 class EtherDAQUDPDriver:
-    __slots__ = (
-        "frame_time",
-        "timing_delay",
-        "listener",
-        "settings",
-        "timing_offset",
-        "timing_slope",
-        "t_bins",
-    )
+    # __slots__ = (
+    #     "frame_time",
+    #     "timing_delay",
+    #     "listener",
+    #     "settings",
+    #     "timing_offset",
+    #     "timing_slope",
+    #     "t_bins",
+    # )
 
     frame_time: float = 0.5
     timing_delay: float
@@ -72,9 +71,9 @@ class EtherDAQUDPDriver:
 
         self.delay_generator.output["CD"].level_amplitude = 1
         self.delay_generator.output["CD"].level_offset = -1.09
-        self.delay_generator.output[
-            "CD"
-        ].polarity = self.delay_generator.LevelPolarity.negative
+        self.delay_generator.output["CD"].polarity = (
+            self.delay_generator.LevelPolarity.negative
+        )
 
         with open(CALIBRATION_FOLDER / "18ns.json", "r") as f:
             timing_calibration = json.load(f)
@@ -92,11 +91,11 @@ class EtherDAQUDPDriver:
                 self.delay_generator.channel["T0"],
                 value * u.ns,
             )
-            self.t_bins = np.linspace(
-                self.bin_to_time(self.settings.bins_per_channel),
-                self.bin_to_time(0),
-                self.settings.data_size + 1,
-            )
+            # self.t_bins = np.linspace(
+            #     self.bin_to_time(self.settings.bins_per_channel),
+            #     self.bin_to_time(0),
+            #     self.settings.data_size + 1,
+            # )
 
     def bins_to_position(self, bins: np.ndarray) -> np.ndarray:
         """converts bin from detector to position on detector (center is 0,0) in mm"""
@@ -140,22 +139,31 @@ class EtherDAQUDPDriver:
     async def read_raw_frame(self):
         # _ = self.read_messages()
         # await asyncio.sleep(self.frame_time)
+
         contents = self.read_messages()
-        all_events = list(
-            itertools.chain(*[messages for _time, _id, messages, _n_failed in contents])
-        )
+        # all_events = list(
+        #     itertools.chain(*[messages for _time, _id, messages, _n_failed in contents])
+        # )
+        # print(all_events)
 
         try:
-            as_array = np.stack(all_events, axis=0)
+            as_array = np.concatenate(contents)
+            # as_array = np.stack(all_events, axis=0)
             return as_array
         except ValueError:
             return np.ndarray(shape=(0, 3), dtype=int)
 
-    async def read_frame(self):
+    async def _read_frame(self):
         raw_frame = await self.read_raw_frame()
         return self.coordinate_convert(raw_frame)
 
-    async def bogus_read_frame(self):
+    async def read_frame(self):
+        _, frame = await asyncio.gather(
+            asyncio.sleep(self.frame_time), self._read_frame()
+        )
+        return frame
+
+    async def _bogus_read_frame(self):
         # await asyncio.sleep(self.frame_time)
         n_points = ceil(np.random.randint(5000, 10000) * self.frame_time)
         xs = np.random.randint(
@@ -174,13 +182,17 @@ class EtherDAQUDPDriver:
 
         return self.coordinate_convert(np.stack([xs, ys, ts], axis=-1))
 
+    async def bogus_read_frame(self):
+        _, frame = await asyncio.gather(
+            asyncio.sleep(self.frame_time), self._bogus_read_frame()
+        )
+        return frame
+
 
 class DetectorController(ManagedInstrument):
     driver_cls = EtherDAQUDPDriver
     driver: EtherDAQUDPDriver
     panel_cls = DetectorPanel
-
-    pause_live_reading = False
 
     # change to "bogus_read_frame" to simulate data instead
     frame = AxisSpecification(ArrayType(), where=[], read="read_frame")
@@ -188,29 +200,30 @@ class DetectorController(ManagedInstrument):
     frame_time = AxisSpecification(float, where=["frame_time"])
     timing_delay = AxisSpecification(float, where=["timing_delay"])
 
+    empty_queue: bool = False
+
     async def prepare(self):
         self.driver.listener.start()
-        self.running = True
+        self.pause_on_start = True
         return await super().prepare()
 
     async def shutdown(self):
-        self.running = False
         self.driver.listener.stop()
         return await super().shutdown()
 
     async def run_step(self):
-        empty_queue = False
         if self.pause_live_reading:
             await asyncio.sleep(self.driver.frame_time)
-            empty_queue = True
+            self.empty_queue = True
         else:
-            if empty_queue:
+            if self.empty_queue:
                 await asyncio.gather(
                     self.driver.empty_message_queue(),
                     asyncio.sleep(self.driver.frame_time),
                 )
-                empty_queue = False
+                self.empty_queue = False
             else:
-                await asyncio.gather(
-                    self.frame.read(), asyncio.sleep(self.driver.frame_time)
-                )
+                await self.frame.read()
+                # await asyncio.gather(
+                #     self.frame.read(), asyncio.sleep(self.driver.frame_time)
+                # )

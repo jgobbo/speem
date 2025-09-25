@@ -24,6 +24,11 @@ VOLTS_TO_MILLIVOLTS = 10**3
 VOLTS_TO_MICROVOLTS = 10**6
 
 
+class ModuleError(IOError):
+    def __init__(self, address: int, message: str):
+        super().__init__(f"{message} on module {address}")
+
+
 def hex_tc(value: int, n_bits: int = 32):
     """
     Returns the two's complement hex value
@@ -204,7 +209,7 @@ class RudiHV:
             *address, slave=self.module_address
         )
         if response.isError():
-            raise Exception(response)
+            raise ModuleError(self.module_address, response)
         return response.registers
 
     def _write_registers(self, address: HVAddress, value) -> None:
@@ -212,7 +217,7 @@ class RudiHV:
             address[0], value, slave=self.module_address
         )
         if response.isError():
-            raise Exception(response)
+            raise ModuleError(self.module_address, response)
 
     def get_ranges(self):
         self.set_mode(HVMode.POSITIVE_HIGH)
@@ -350,7 +355,7 @@ class RudiDAC:
             *address, slave=self.module_address
         )
         if response.isError():
-            raise Exception(response)
+            raise ModuleError(self.module_address, response)
         return response.registers
 
     def _write_registers(self, address: DACAddress, data: list[int]) -> None:
@@ -358,7 +363,7 @@ class RudiDAC:
             address[0], data, slave=self.module_address
         )
         if response.isError():
-            raise Exception(response)
+            raise ModuleError(self.module_address, response)
 
     def get_voltage(self) -> float:
         data = self._read_holding_registers(DACAddress.SETPOINT_uV)

@@ -55,7 +55,7 @@ class DetectorPanel(BasicInstrumentPanel):
 
     start_time: float = None
     interval_start_time: float = None
-    averaging_time: float = 5
+    averaging_time: float = 1
 
     n_elec: int = 0
     n_elec_list: list[tuple] = []
@@ -69,25 +69,31 @@ class DetectorPanel(BasicInstrumentPanel):
         )
 
     @property
-    def t_coords(self):
+    def t_bins(self) -> np.ndarray:
         return np.linspace(
-            self.instrument.driver.bin_to_time(0),
             self.instrument.driver.bin_to_time(self.settings.bins_per_channel),
-            self.settings.data_size,
+            self.instrument.driver.bin_to_time(0),
+            self.settings.data_size + 1,
         )
 
-    def reset(self, *_):
+    @property
+    def t_coords(self) -> np.ndarray:
+        return self.t_bins[-2::-1]
+
+    def reset(self, *_) -> None:
         # first we reset the marginals, we keep marginals only for data storage reasons
         # data_x is a marginal with x integrated out, and similarly for data_y and data_t
         if self.data_x is None:
-            xy_coords = np.linspace(-13, 13, self.settings.data_size)
+            # xy_coords = np.linspace(-13, 13, self.settings.data_size)
+            xy_coords = self.xy_bins[:-1]
+            t_coords = self.t_coords
 
             self.data_x = DataArray(
                 np.zeros(
                     shape=(self.settings.data_size, self.settings.data_size),
                     dtype=float,
                 ),
-                coords={"y": xy_coords, "t": self.t_coords},
+                coords={"y": xy_coords, "t": t_coords},
                 dims=("y", "t"),
             )
             self.data_y = DataArray(
@@ -95,7 +101,7 @@ class DetectorPanel(BasicInstrumentPanel):
                     shape=(self.settings.data_size, self.settings.data_size),
                     dtype=float,
                 ),
-                coords={"x": xy_coords, "t": self.t_coords},
+                coords={"x": xy_coords, "t": t_coords},
                 dims=("x", "t"),
             )
             self.data_t = DataArray(
@@ -118,11 +124,13 @@ class DetectorPanel(BasicInstrumentPanel):
         self.n_elec_list = []
 
     @debounce(0.01)
-    def update_timing_delay(self, new_time):
+    def update_timing_delay(self, new_time: str) -> None:
         new_time = float(new_time)
         self.instrument.driver.timing_delay = new_time
-        self.data_x.coords["t"] = self.t_coords
-        self.data_y.coords["t"] = self.t_coords
+
+        t_coords = self.t_coords
+        self.data_x.coords["t"] = t_coords
+        self.data_y.coords["t"] = t_coords
 
         # hacky way to update axis labels; gotten from AxisItem source code
         for image in (self.image_x, self.image_y):
@@ -130,7 +138,7 @@ class DetectorPanel(BasicInstrumentPanel):
             t_axis.picture = None
             t_axis.update()
 
-    def layout(self):
+    def set_layout(self) -> None:
         self.reset()
 
         # Here is where we configure the main data plots
@@ -186,7 +194,7 @@ class DetectorPanel(BasicInstrumentPanel):
                                     input_type=float,
                                     validator_settings={
                                         "bottom": 0,
-                                        "top": 1500,
+                                        "top": 3000,
                                         "decimals": 3,
                                     },
                                     id="timing_delay",
@@ -255,17 +263,20 @@ class DetectorPanel(BasicInstrumentPanel):
         self.receive_frame(value)
 
     def receive_frame(self, frame: np.ndarray):
+        t_bins = self.t_bins
         if self.ui["save-only-latest"].isChecked():
             self.data_x.data = np.histogram2d(
                 frame[:, 1],
                 frame[:, 2],
-                bins=[self.xy_bins, self.instrument.driver.t_bins],
-            )[0]
+                # bins=[self.xy_bins, self.instrument.driver.t_bins],
+                bins=[self.xy_bins, t_bins],
+            )[0][:, ::-1]
             self.data_y.data = np.histogram2d(
                 frame[:, 0],
                 frame[:, 2],
-                bins=[self.xy_bins, self.instrument.driver.t_bins],
-            )[0]
+                # bins=[self.xy_bins, self.instrument.driver.t_bins],
+                bins=[self.xy_bins, t_bins],
+            )[0][:, ::-1]
             self.data_t.data = np.histogram2d(
                 frame[:, 0], frame[:, 1], bins=[self.xy_bins, self.xy_bins]
             )[0]
@@ -273,13 +284,15 @@ class DetectorPanel(BasicInstrumentPanel):
             self.data_x.data += np.histogram2d(
                 frame[:, 1],
                 frame[:, 2],
-                bins=[self.xy_bins, self.instrument.driver.t_bins],
-            )[0]
+                # bins=[self.xy_bins, self.instrument.driver.t_bins],
+                bins=[self.xy_bins, t_bins],
+            )[0][:, ::-1]
             self.data_y.data += np.histogram2d(
                 frame[:, 0],
                 frame[:, 2],
-                bins=[self.xy_bins, self.instrument.driver.t_bins],
-            )[0]
+                # bins=[self.xy_bins, self.instrument.driver.t_bins],
+                bins=[self.xy_bins, t_bins],
+            )[0][:, ::-1]
             self.data_t.data += np.histogram2d(
                 frame[:, 0], frame[:, 1], bins=[self.xy_bins, self.xy_bins]
             )[0]
@@ -300,7 +313,7 @@ class DetectorPanel(BasicInstrumentPanel):
         plot, data, sum_axis = {
             0: (self.plot_x_marginal, self.data_t, 1),
             1: (self.plot_y_marginal, self.data_t, 0),
-            2: (self.plot_t_marginal, self.data_x, 0),
+            2: (self.plot_t_marginal, self.data_x[:, :-1], 0),
         }[marginal_index]
 
         data = np.sum(data, axis=sum_axis)

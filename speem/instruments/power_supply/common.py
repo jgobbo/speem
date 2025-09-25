@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum, auto
+from enum import auto, StrEnum
 from typing import TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
@@ -12,14 +12,17 @@ __all__ = [
     "Terminal",
     "PowerSupplySettings",
     "LensTable",
+    "INVERTED_ELECTRODES",
 ]
 
 
-class Electrode(str, Enum):  # str subclassing required for json serialization
-    BASELINE = auto()
+class Electrode(StrEnum):  # str subclassing required for json serialization
+    VBL = auto()
     V00 = auto()
     V01 = auto()
     V02 = auto()
+    V03 = auto()
+    V10 = auto()
     V11 = auto()
     V12 = auto()
     V13 = auto()
@@ -34,7 +37,7 @@ class Electrode(str, Enum):  # str subclassing required for json serialization
         return self.name
 
 
-class Corrector(Enum):
+class Corrector(StrEnum):
     ST0 = auto()
     ST1 = auto()
     ST2 = auto()
@@ -50,7 +53,7 @@ class Corrector(Enum):
         return self.name
 
 
-class Detector(Enum):
+class Detector(StrEnum):
     GRID = auto()
     MCP = auto()
     ANODE = auto()
@@ -60,6 +63,8 @@ class Detector(Enum):
 
 
 Terminal = Union[Electrode, Corrector, Detector]
+
+INVERTED_ELECTRODES = {Electrode.VBL, Electrode.V23, Electrode.V33}
 
 null_configuration = {}
 
@@ -72,7 +77,7 @@ temp_configuration = {
     Electrode.V11: 33,
     Electrode.V12: 34,
     Electrode.V13: 35,
-    Electrode.BASELINE: 36,
+    Electrode.VBL: 36,
 }
 
 
@@ -85,7 +90,7 @@ test_configuration = {
     Electrode.V31: 33,
     Electrode.V32: 34,
     Electrode.V33: 35,
-    Electrode.BASELINE: 36,
+    Electrode.VBL: 36,
 }
 
 nominal_configuration = {
@@ -93,7 +98,9 @@ nominal_configuration = {
     Detector.MCP: 3,
     Electrode.V00: 4,
     Electrode.V01: 5,
-    Electrode.V02: 6,
+    Electrode.V02: 16,
+    Electrode.V03: 1,
+    Electrode.V10: 6,
     Electrode.V11: 7,
     Electrode.V12: 8,
     Electrode.V13: 9,
@@ -103,7 +110,67 @@ nominal_configuration = {
     Electrode.V31: 13,
     Electrode.V32: 14,
     Electrode.V33: 15,
-    Electrode.BASELINE: 33,
+    Electrode.VBL: 33,
+    Corrector.D00: 34,
+    Corrector.D01: 35,
+    Corrector.D02: 36,
+    Corrector.D10: 37,
+    Corrector.D11: 38,
+    Corrector.D12: 39,
+    Corrector.ST0: 40,
+    Corrector.ST1: 41,
+    Corrector.ST2: 42,
+    Detector.GRID: 44,
+}
+
+no_10_config = {
+    Detector.ANODE: 2,
+    Detector.MCP: 3,
+    Electrode.V00: 4,
+    Electrode.V01: 5,
+    Electrode.V02: 16,
+    Electrode.V03: 1,
+    Electrode.V10: 6,
+    Electrode.V11: 7,
+    Electrode.V12: 8,
+    Electrode.V13: 9,
+    Electrode.V21: 15,
+    Electrode.V22: 11,
+    Electrode.V23: 12,
+    Electrode.V31: 13,
+    Electrode.V32: 14,
+    Electrode.V33: 43,
+    Electrode.VBL: 33,
+    Corrector.D00: 34,
+    Corrector.D01: 35,
+    Corrector.D02: 36,
+    Corrector.D10: 37,
+    Corrector.D11: 38,
+    Corrector.D12: 39,
+    Corrector.ST0: 40,
+    Corrector.ST1: 41,
+    Corrector.ST2: 42,
+    Detector.GRID: 44,
+}
+
+config_for_7_8_broken = {
+    Detector.ANODE: 2,
+    Detector.MCP: 3,
+    Electrode.V00: 4,
+    Electrode.V01: 5,
+    Electrode.V02: 16,
+    Electrode.V03: 1,
+    Electrode.V10: 6,
+    Electrode.V11: 12,
+    Electrode.V12: 15,
+    Electrode.V13: 9,
+    Electrode.V21: 10,
+    Electrode.V22: 11,
+    Electrode.V23: 7,
+    Electrode.V31: 13,
+    Electrode.V32: 14,
+    Electrode.V33: 8,
+    Electrode.VBL: 33,
     Corrector.D00: 34,
     Corrector.D01: 35,
     Corrector.D02: 36,
@@ -119,10 +186,7 @@ nominal_configuration = {
 
 @dataclass
 class PowerSupplySettings:
-    hv_ramp: int = 0
-    DAC_ramp: int = 0
-    n_electrodes: int = 15
-    terminal_configuration = nominal_configuration
+    terminal_configuration = config_for_7_8_broken
 
 
 @dataclass
