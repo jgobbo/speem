@@ -1,0 +1,2 @@
+2025-10-14 14:54:19.865 | WARNING  | daquiri_common.remote.schema:from_type:282 - Assuming naive implementation of Array and Object types.
+2025-10-14 14:54:20.057 | WARNING  | speem.instruments.power_supply.instrument:__init__:57 - Terminals:[ANODE, MCP, V00, V01, V02, V03, V10, V11, V12, V13, V21, V22, V23, V31, V32, V33] weren't shut down properly. Using default voltage ranges for them.

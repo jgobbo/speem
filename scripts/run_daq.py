@@ -1,14 +1,20 @@
+import json, asyncio
 from dataclasses import dataclass
 import numpy as np
-import json
+import xarray as xr
 
-from autodidaqt import AutodiDAQt, Experiment
-from autodidaqt.mock import MockMotionController
+from daquiri import Daquiri, Experiment
+from daquiri.mock import MockMotionController
 
 from speem.instruments import *
 from speem.instruments.power_supply.common import Electrode
 
 from datetime import date
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @dataclass
@@ -47,6 +53,30 @@ class RepeatScan:
 
         yield [detector.frame_time.write(original_frame_time)]
 
+    @staticmethod
+    def save_data(metadata: dict, raw_daq: "xr.Dataset", directory: "Path"):
+        attrs: dict = metadata["metadata"][0]
+
+        power_supply_data_key = "power_supply-terminal_voltages-data"
+        attrs.update(raw_daq[power_supply_data_key].data[0])
+        raw_daq = raw_daq.drop_vars(power_supply_data_key)
+
+        frame_data_key = "detector-frame-data"
+        lengths = []
+        for frame in raw_daq[frame_data_key].data:
+            lengths.append(len(frame))
+        raw_daq[f"{frame_data_key}-lengths"] = xr.DataArray(
+            np.array(lengths),
+            coords=raw_daq[frame_data_key].coords,
+            dims=raw_daq[frame_data_key].dims,
+        )
+        concatenated_data = np.concatenate(raw_daq[frame_data_key].data)
+        raw_daq["count_list"] = xr.DataArray(concatenated_data)
+        raw_daq = raw_daq.drop_vars(frame_data_key)
+
+        raw_daq.attrs = attrs
+        raw_daq.to_netcdf(directory / "raw_daq.nc")
+
     @property
     def metadata(self):
         return dict(name=self.name, n_repeats=self.n_repeats, frame_s=self.frame_s)
@@ -82,29 +112,35 @@ class ScanElectrode:
         phony: MockMotionController,
         **kwargs,
     ):
-        experiment.collate(
-            independent=[[phony.stages[0], self.electrode.name]],
-            dependent=[[detector.frame, "frames"]],
-        )
+        # experiment.collate(
+        #     independent=[[power_supply.terminal_voltages, self.electrode.name]],
+        #     dependent=[[detector.frame, "frames"]],
+        # )
 
-        original_frame_time = detector.driver.frame_time
+        original_frame_time = (yield [detector.frame_time.read()])[0]
+        original_electrode_voltage = (yield [power_supply.terminal_voltages.read()])[0][
+            self.electrode
+        ]
         yield [detector.frame_time.write(self.frame_time)]
 
+        detector.driver.empty_message_queue()
         voltage = self.start
         while abs(voltage) < abs(self.stop):
-            with experiment.point():
-                yield power_supply.driver.apply_voltage(self.electrode, voltage)
-                yield [phony.stages[0].write(voltage)]
-                yield [detector.frame.read()]
+            # with experiment.point():
+            yield [power_supply.terminal_voltages.write({self.electrode: voltage})]
+            yield [detector.frame.read()]
 
             voltage += self.step
 
-        yield power_supply.driver.apply_voltage(self.electrode, self.stop)
-        yield [phony.stages[0].write(self.stop)]
+        yield [power_supply.terminal_voltages.write({self.electrode: self.stop})]
         yield [detector.frame.read()]
 
-        yield power_supply.driver.apply_voltage(self.electrode, 0)
         yield [detector.frame_time.write(original_frame_time)]
+        yield [
+            power_supply.terminal_voltages.write(
+                {self.electrode: original_electrode_voltage}
+            )
+        ]
 
 
 # @dataclass
@@ -167,7 +203,7 @@ class SPEEMExperiment(Experiment):
     scan_methods = [RepeatScan, ScanElectrode]
 
 
-app = AutodiDAQt(
+app = Daquiri(
     __name__,
     actors={
         "experiment": SPEEMExperiment,
@@ -175,7 +211,7 @@ app = AutodiDAQt(
     managed_instruments={
         "detector": DetectorController,
         "power_supply": PowerSupplyController,
-        # "beam_pointer": BeamPointerController,
+        "beam_pointer": BeamPointerController,
         # "power_meter": PowermeterController,
         "phony": MockMotionController,
         "motion": MotionController,

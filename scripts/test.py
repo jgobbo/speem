@@ -1,4 +1,4 @@
-from autodidaqt.ui.pg_extras import ArrayImageView
+from daquiri.ui.pg_extras import ArrayImageView
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication
 import sys

@@ -1,12 +1,12 @@
 from speem.instruments import *
-from autodidaqt import AutodiDAQt, Experiment
+from daquiri import Daquiri, Experiment
 
-app = AutodiDAQt(
+app = Daquiri(
     __name__,
     # actors={"experiment": Experiment,},
     managed_instruments={
-        "motors": MotionController,
-        # "detector": DetectorController,
+        # "motors": MotionController,
+        "detector": DetectorController,
         # "power supply": PowerSupplyController,
         # "beam_pointer": BeamPointerController,
     },

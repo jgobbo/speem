@@ -3,16 +3,17 @@ import sys
 from pathlib import Path
 
 HOME_ROOT = Path(__file__).parent.parent.parent.absolute()
-# sys.path.append(str(HOME_ROOT / "autodidaqt-common"))
-# sys.path.append(str(HOME_ROOT / "autodidaqt"))
+# sys.path.append(str(HOME_ROOT / "daquiri-common"))
+# sys.path.append(str(HOME_ROOT / "daquiri"))
 sys.path.append(str(HOME_ROOT / "peem-daq/instruments"))
 # =======END HEADER========
 from dataclasses import dataclass
 
-from autodidaqt import AutodiDAQt, Experiment
-from autodidaqt.mock import MockMotionController
+from daquiri import Daquiri, Experiment
+from daquiri.mock import MockMotionController
 
 from power_supply import PowerSupplyController
+
 
 @dataclass
 class RepeatScan:
@@ -22,10 +23,10 @@ class RepeatScan:
 
     def sequence(self, experiment, power_supply, phony, **kwargs):
         experiment.collate(
-            independent=[[phony.stages[0], 'x']],
+            independent=[[phony.stages[0], "x"]],
             dependent=[
-                [power_supply.voltages, 'voltages'],
-            ]
+                [power_supply.voltages, "voltages"],
+            ],
         )
 
         for step_i in range(self.n_repeats):
@@ -33,16 +34,20 @@ class RepeatScan:
                 yield [phony.stages[0].write(step_i)]
                 yield [power_supply.voltages.write()]
 
+
 class PSTest(Experiment):
-    scan_methods = [RepeatScan,]
+    scan_methods = [
+        RepeatScan,
+    ]
 
 
-app = AutodiDAQt(__name__,
+app = Daquiri(
+    __name__,
     managed_instruments={
-        'power_supply': PowerSupplyController,
-        'phony': MockMotionController,
-    })
+        "power_supply": PowerSupplyController,
+        "phony": MockMotionController,
+    },
+)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.start()
-    

@@ -1,0 +1,55 @@
+2025-10-14 14:46:42.035 | WARNING  | daquiri_common.remote.schema:from_type:282 - Assuming naive implementation of Array and Object types.
+2025-10-14 14:46:42.194 | INFO     | daquiri.core:start:803 - Application in startup.
+2025-10-14 14:46:42.194 | INFO     | daquiri.core:start:804 - CommandLineConfig(headless=False, remote_config=None)
+2025-10-14 14:46:42.194 | INFO     | daquiri.core:start:805 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'nc', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2025-10-14 14:46:42.212 | INFO     | daquiri.core:start:810 - Configuring Qt application and styles
+2025-10-14 14:46:42.241 | INFO     | daquiri.core:configure_event_loop:779 - Configuring async runtime
+2025-10-14 14:46:42.241 | INFO     | daquiri.core:configure_event_loop:786 - Using asyncio for async support.
+2025-10-14 14:46:42.241 | INFO     | daquiri.core:configure_event_loop:798 - Setting custom exception handler on async loop
+2025-10-14 14:46:42.509 | INFO     | daquiri.core:launch_panel:135 - Opening panel _instrument_manager
+2025-10-14 14:46:42.509 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel detector
+2025-10-14 14:46:42.785 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer
+2025-10-14 14:46:42.833 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2025-10-14 14:46:42.881 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel motion
+2025-10-14 14:46:43.328 | INFO     | daquiri.core:launch_panel:135 - Opening panel experiment
+2025-10-14 14:46:43.364 | INFO     | daquiri.core:master:572 - Started async loop.
+2025-10-14 14:46:43.365 | INFO     | daquiri.core:master:593 - Running actor .prepare
+2025-10-14 14:46:43.581 | INFO     | daquiri.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, ExperimentTransitions.Initialize
+2025-10-14 14:46:43.581 | INFO     | daquiri.core:master:610 - Installing Qt event processing on the standard event loop
+2025-10-14 14:46:43.581 | INFO     | daquiri.core:load_state:721 - Loading application state.
+2025-10-14 14:46:43.581 | INFO     | daquiri.core:load_state:725 - Found candidate application state: None... loading.
+2025-10-14 14:46:43.582 | INFO     | daquiri.core:master:615 - Main task is dropping into event loop
+2025-10-14 14:47:52.857 | WARNING  | daquiri.core:shutdown:431 - Shutting down due to exception.
+2025-10-14 14:47:52.857 | INFO     | daquiri.core:shutdown:433 - Shutting down process pool.
+2025-10-14 14:47:52.859 | INFO     | daquiri.core:shutdown:435 - Finished shutting down process pool.
+2025-10-14 14:47:52.859 | INFO     | daquiri.core:shutdown:437 - Saving...
+2025-10-14 14:47:52.859 | INFO     | daquiri.core:save_state:755 - Saving application state.
+2025-10-14 14:47:52.863 | INFO     | daquiri.core:save_state:763 - Finished saving application state.
+2025-10-14 14:47:52.863 | INFO     | daquiri.core:shutdown:441 - Application is still reading messages. Stopping...
+2025-10-14 14:47:52.863 | INFO     | daquiri.core:shutdown:445 - Sending graceful shutdown requests.
+2025-10-14 14:47:52.864 | INFO     | daquiri.core:shutdown:455 - Waiting graceful shutdown requests.
+2025-10-14 14:47:52.984 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['frame']
+2025-10-14 14:47:52.985 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['frame']
+2025-10-14 14:47:52.985 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['frame_time']
+2025-10-14 14:47:52.985 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['frame_time']
+2025-10-14 14:47:52.985 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['raw_frame']
+2025-10-14 14:47:52.985 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['raw_frame']
+2025-10-14 14:47:52.986 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['timing_delay']
+2025-10-14 14:47:52.986 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['timing_delay']
+2025-10-14 14:47:53.083 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['x']
+2025-10-14 14:47:53.083 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['x']
+2025-10-14 14:47:53.083 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['y']
+2025-10-14 14:47:53.083 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['y']
+2025-10-14 14:47:53.083 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['z']
+2025-10-14 14:47:53.084 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['z']
+2025-10-14 14:47:53.084 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['stages', 0]
+2025-10-14 14:47:53.085 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['stages', 0]
+2025-10-14 14:47:53.085 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['stages', 1]
+2025-10-14 14:47:53.085 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['stages', 1]
+2025-10-14 14:47:53.085 | INFO     | daquiri.instrument.managed_instrument:shutdown:241 - Shutting down ['stages', 2]
+2025-10-14 14:47:53.085 | INFO     | daquiri.instrument.managed_instrument:shutdown:243 - Finished shutting down ['stages', 2]
+2025-10-14 14:47:53.590 | INFO     | daquiri.core:shutdown:460 - Graceful shutdown complete.
+2025-10-14 14:47:53.591 | INFO     | daquiri.core:shutdown:473 - Cancelling tasks...
+2025-10-14 14:47:53.592 | INFO     | daquiri.core:shutdown:488 - Waiting on finished tasks...
+2025-10-14 14:47:53.594 | INFO     | daquiri.core:shutdown:499 - Stopping loop
+2025-10-14 14:47:53.595 | INFO     | daquiri.core:start:829 - Closed daquiri successfully.

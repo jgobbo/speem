@@ -6,7 +6,7 @@
   "logging_directory": "out\\logs",
   "log_format": "{time}-{user}-{session}",
 
-  "save_format": "pickle",
+  "save_format": "nc",
   "data_directory": "out\\data",
   "data_format": "{user}\\{date}-{session}-{run}",
 

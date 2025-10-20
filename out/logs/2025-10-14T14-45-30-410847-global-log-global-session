@@ -1,0 +1,21 @@
+2025-10-14 14:45:30.426 | WARNING  | daquiri_common.remote.schema:from_type:282 - Assuming naive implementation of Array and Object types.
+2025-10-14 14:45:30.631 | INFO     | daquiri.core:start:803 - Application in startup.
+2025-10-14 14:45:30.631 | INFO     | daquiri.core:start:804 - CommandLineConfig(headless=False, remote_config=None)
+2025-10-14 14:45:30.631 | INFO     | daquiri.core:start:805 - {'version': '0.0.0', 'debug': True, 'logging': True, 'logging_directory': 'out\\logs', 'log_format': '{time}-{user}-{session}', 'save_format': 'nc', 'data_directory': 'out\\data', 'data_format': '{user}\\{date}-{session}-{run}', 'maintain_state': True, 'state_directory': 'out\\state', 'instruments': {'simulate_instruments': False}, 'use_profiles': False, 'profiles': {}}
+2025-10-14 14:45:30.631 | INFO     | daquiri.core:start:810 - Configuring Qt application and styles
+2025-10-14 14:45:30.741 | INFO     | daquiri.core:configure_event_loop:779 - Configuring async runtime
+2025-10-14 14:45:30.741 | INFO     | daquiri.core:configure_event_loop:786 - Using asyncio for async support.
+2025-10-14 14:45:30.741 | INFO     | daquiri.core:configure_event_loop:798 - Setting custom exception handler on async loop
+2025-10-14 14:45:31.011 | INFO     | daquiri.core:launch_panel:135 - Opening panel _instrument_manager
+2025-10-14 14:45:31.011 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel detector
+2025-10-14 14:45:31.550 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel beam_pointer
+2025-10-14 14:45:31.617 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel phony
+2025-10-14 14:45:31.663 | INFO     | daquiri.panels.instrument_manager:launch_panel:21 - Instrument Manager: Opening panel motion
+2025-10-14 14:45:32.159 | INFO     | daquiri.core:launch_panel:135 - Opening panel experiment
+2025-10-14 14:45:32.199 | INFO     | daquiri.core:master:572 - Started async loop.
+2025-10-14 14:45:32.199 | INFO     | daquiri.core:master:593 - Running actor .prepare
+2025-10-14 14:45:32.416 | INFO     | daquiri.experiment.fsm:transition_to:42 - {'match': <ExperimentTransitions.Initialize: 'initialize'>, 'to': <ExperimentStates.Idle: 'IDLE'>}, ExperimentTransitions.Initialize
+2025-10-14 14:45:32.416 | INFO     | daquiri.core:master:610 - Installing Qt event processing on the standard event loop
+2025-10-14 14:45:32.416 | INFO     | daquiri.core:load_state:721 - Loading application state.
+2025-10-14 14:45:32.416 | INFO     | daquiri.core:load_state:725 - Found candidate application state: None... loading.
+2025-10-14 14:45:32.417 | INFO     | daquiri.core:master:615 - Main task is dropping into event loop
